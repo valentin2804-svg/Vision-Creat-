@@ -58,11 +58,35 @@ body{
 .lt-area{display:flex;align-items:center;justify-content:space-between;padding:14px 20px 6px}
 .lt{font-size:34px;font-weight:800;letter-spacing:-.8px;color:var(--lbl);transition:var(--tr)}
 
-/* THEME TOGGLE */
-.theme-btn{width:36px;height:36px;border-radius:50%;background:var(--g5);border:none;
-  cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:17px;
-  transition:background .2s,transform .15s;flex-shrink:0}
-.theme-btn:active{transform:scale(.88)}
+/* THEME TOGGLE SWITCH */
+.theme-sw{
+  width:58px;height:32px;border-radius:16px;background:#E5E5EA;
+  position:relative;cursor:pointer;flex-shrink:0;border:none;padding:0;
+  transition:background .35s cubic-bezier(.4,0,.2,1);
+  box-shadow:inset 0 0 0 .5px rgba(0,0,0,.08);
+  display:inline-block;vertical-align:middle;
+}
+[data-theme="dark"] .theme-sw{background:#5856D6;}
+.theme-sw-thumb{
+  position:absolute;top:3px;left:3px;
+  width:26px;height:26px;border-radius:50%;
+  background:#fff;
+  box-shadow:0 2px 8px rgba(0,0,0,.22),0 1px 3px rgba(0,0,0,.14);
+  transition:transform .35s cubic-bezier(.34,1.3,.64,1);
+  display:flex;align-items:center;justify-content:center;
+  font-size:14px;line-height:1;pointer-events:none;
+}
+[data-theme="dark"] .theme-sw-thumb{transform:translateX(26px);}
+.theme-sw-track-icons{
+  position:absolute;inset:0;display:flex;
+  align-items:center;justify-content:space-between;
+  padding:0 7px;pointer-events:none;
+}
+.theme-sw-track-icons span{font-size:13px;line-height:1;transition:opacity .25s}
+.theme-sw-track-icons .ico-sun{opacity:1}
+.theme-sw-track-icons .ico-moon{opacity:0}
+[data-theme="dark"] .theme-sw-track-icons .ico-sun{opacity:0}
+[data-theme="dark"] .theme-sw-track-icons .ico-moon{opacity:1}
 
 /* SCROLL */
 .scroll{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch}
@@ -306,7 +330,10 @@ body{
   <div class="tab-s active" id="tab-training">
     <div class="lt-area">
       <div class="lt">Meine Pläne</div>
-      <button class="theme-btn" onclick="toggleTheme()" id="theme-btn">🌙</button>
+      <button class="theme-sw" onclick="toggleTheme()" id="theme-sw" aria-label="Dark Mode">
+  <div class="theme-sw-track-icons"><span class="ico-sun">☀️</span><span class="ico-moon">🌙</span></div>
+  <div class="theme-sw-thumb"></div>
+</button>
     </div>
     <div class="scroll tab" id="plans-scroll">
       <div id="plans-list"></div>
@@ -319,7 +346,10 @@ body{
   <div class="tab-s" id="tab-kalender">
     <div class="lt-area">
       <div class="lt">Wochenplan</div>
-      <button class="theme-btn" onclick="toggleTheme()">🌙</button>
+      <button class="theme-sw" onclick="toggleTheme()" aria-label="Dark Mode">
+  <div class="theme-sw-track-icons"><span class="ico-sun">☀️</span><span class="ico-moon">🌙</span></div>
+  <div class="theme-sw-thumb"></div>
+</button>
     </div>
     <div class="scroll tab" id="cal-scroll">
       <div id="cal-body"></div>
@@ -331,7 +361,10 @@ body{
   <div class="tab-s" id="tab-verlauf">
     <div class="lt-area">
       <div class="lt">Verlauf</div>
-      <button class="theme-btn" onclick="toggleTheme()">🌙</button>
+      <button class="theme-sw" onclick="toggleTheme()" aria-label="Dark Mode">
+  <div class="theme-sw-track-icons"><span class="ico-sun">☀️</span><span class="ico-moon">🌙</span></div>
+  <div class="theme-sw-thumb"></div>
+</button>
     </div>
     <div class="scroll tab" id="hist-scroll">
       <div id="hist-list"></div>
@@ -343,7 +376,10 @@ body{
   <div class="tab-s" id="tab-stats">
     <div class="lt-area">
       <div class="lt">Statistiken</div>
-      <button class="theme-btn" onclick="toggleTheme()">🌙</button>
+      <button class="theme-sw" onclick="toggleTheme()" aria-label="Dark Mode">
+  <div class="theme-sw-track-icons"><span class="ico-sun">☀️</span><span class="ico-moon">🌙</span></div>
+  <div class="theme-sw-thumb"></div>
+</button>
     </div>
     <div class="scroll tab" id="stats-scroll">
       <div id="stats-body"></div>
@@ -628,8 +664,6 @@ function saveS() {
 // ═══════════════════════════════════════════
 function applyTheme(t) {
   document.documentElement.setAttribute('data-theme', t);
-  document.getElementById('theme-btn').textContent = t==='dark' ? '☀️' : '🌙';
-  document.querySelectorAll('.theme-btn').forEach(b => b.textContent = t==='dark'?'☀️':'🌙');
 }
 function toggleTheme() {
   S.theme = S.theme==='dark' ? 'light' : 'dark';

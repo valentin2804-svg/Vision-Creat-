@@ -3,8 +3,8 @@
   "configurations": [
     {
       "name": "FitTrack",
-      "runtimeExecutable": "python3",
-      "runtimeArgs": ["-m", "http.server", "3000"],
+      "runtimeExecutable": "C:\\Program Files\\nodejs\\npx.cmd",
+      "runtimeArgs": ["--yes", "serve", "-l", "3000", "."],
       "port": 3000
     }
   ]

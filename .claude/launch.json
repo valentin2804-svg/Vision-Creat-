@@ -6,6 +6,12 @@
       "runtimeExecutable": "C:\\Program Files\\nodejs\\npx.cmd",
       "runtimeArgs": ["--yes", "serve", "-l", "3000", "."],
       "port": 3000
+    },
+    {
+      "name": "worldwatch",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["C:\\Users\\valir\\Desktop\\Claude\\WorldWatch\\server.js"],
+      "port": 3001
     }
   ]
 }

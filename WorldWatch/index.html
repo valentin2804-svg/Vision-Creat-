@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WorldWatch — Global Crisis Monitor</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://unpkg.com/globe.gl@2.30.0/dist/globe.gl.min.js"></script>
+</head>
+<body>
+  <div class="layout">
+
+    <!-- ── Top Bar ───────────────────────────────────────── -->
+    <header class="topbar">
+      <div class="topbar-logo">
+        <div class="logo-pulse"></div>
+        WorldWatch
+      </div>
+      <div class="topbar-live">
+        <div class="live-dot"></div>
+        Live
+      </div>
+      <div class="topbar-divider"></div>
+      <div class="topbar-counters">
+        <div class="tc">
+          <span class="tc-val" id="hdr-total">—</span>
+          <span class="tc-lbl">Active Zones</span>
+        </div>
+        <div class="tc">
+          <span class="tc-val red" id="hdr-critical">—</span>
+          <span class="tc-lbl">Critical</span>
+        </div>
+        <div class="tc">
+          <span class="tc-val orange" id="hdr-wars">—</span>
+          <span class="tc-lbl">Armed Conflicts</span>
+        </div>
+      </div>
+      <div class="topbar-spacer"></div>
+      <span class="topbar-time">Last update: <strong id="last-update">—</strong></span>
+      <button class="btn-refresh" onclick="refreshAll()">↻ Refresh</button>
+    </header>
+
+    <!-- ── Left Sidebar ──────────────────────────────────── -->
+    <aside class="sidebar-left">
+
+      <div class="s-section">
+        <div class="s-title">Layers</div>
+        <div id="filter-list"></div>
+      </div>
+
+      <div class="s-section">
+        <div class="s-title">Legend</div>
+        <div class="legend-row"><span class="ldot" style="background:#ff2244;box-shadow:0 0 6px #ff2244"></span>Armed Conflict / War</div>
+        <div class="legend-row"><span class="ldot" style="background:#ff6600;box-shadow:0 0 6px #ff6600"></span>Terrorism / Attacks</div>
+        <div class="legend-row"><span class="ldot" style="background:#ff8800;box-shadow:0 0 6px #ff8800"></span>Civil Unrest</div>
+        <div class="legend-row"><span class="ldot" style="background:#0099ff;box-shadow:0 0 6px #0099ff"></span>Natural Disaster</div>
+        <div class="legend-row"><span class="ldot" style="background:#bb44ff;box-shadow:0 0 6px #bb44ff"></span>Humanitarian Crisis</div>
+        <div class="legend-note">Ring size = Severity (1–10)</div>
+      </div>
+
+      <div class="s-section">
+        <div class="s-title">Statistics</div>
+        <div class="stat-grid">
+          <div class="stat-card"><div class="sv" id="st-total">0</div><div class="sl">Zones</div></div>
+          <div class="stat-card"><div class="sv red" id="st-critical">0</div><div class="sl">Critical</div></div>
+          <div class="stat-card"><div class="sv" id="st-wars">0</div><div class="sl">Armed</div></div>
+          <div class="stat-card"><div class="sv orange" id="st-terror">0</div><div class="sl">Terror</div></div>
+        </div>
+      </div>
+
+    </aside>
+
+    <!-- ── Globe ─────────────────────────────────────────── -->
+    <main class="globe-area">
+      <div id="globe-el"></div>
+
+      <!-- Hover tooltip -->
+      <div class="globe-tooltip" id="tooltip"></div>
+
+      <!-- Click popup -->
+      <div class="popup" id="popup">
+        <div class="popup-head">
+          <div class="popup-name" id="p-name"></div>
+          <button class="popup-close" onclick="closePopup()">✕</button>
+        </div>
+        <div class="popup-badge" id="p-badge"></div>
+        <div class="popup-rows">
+          <div class="popup-row"><span>Region</span><strong id="p-region"></strong></div>
+          <div class="popup-row"><span>Casualties</span><strong id="p-casualties"></strong></div>
+          <div class="popup-row"><span>Status</span><strong id="p-status"></strong></div>
+        </div>
+        <p class="popup-desc" id="p-desc"></p>
+        <div class="popup-sev">
+          <span>Severity</span>
+          <div class="sev-bar" id="p-sev"></div>
+        </div>
+      </div>
+    </main>
+
+    <!-- ── Right Sidebar – News Feed ─────────────────────── -->
+    <aside class="sidebar-right">
+      <div class="news-header">
+        <div class="news-title">Intelligence Feed</div>
+        <div class="news-source-hint">GDELT · Reuters · AP · BBC</div>
+      </div>
+      <div class="news-tabs" id="news-tabs">
+        <button class="ntab active" data-tab="all"      onclick="setTab(this,'all')">All</button>
+        <button class="ntab"        data-tab="war"      onclick="setTab(this,'war')">War</button>
+        <button class="ntab"        data-tab="terror"   onclick="setTab(this,'terror')">Terror</button>
+        <button class="ntab"        data-tab="disaster" onclick="setTab(this,'disaster')">Disaster</button>
+        <button class="ntab"        data-tab="unrest"   onclick="setTab(this,'unrest')">Unrest</button>
+      </div>
+      <div class="news-list" id="news-list">
+        <div class="news-loading"><div class="spinner"></div><span>Loading reports…</span></div>
+      </div>
+    </aside>
+
+    <!-- ── Breaking Ticker ───────────────────────────────── -->
+    <footer class="ticker">
+      <div class="ticker-label">Breaking</div>
+      <div class="ticker-track">
+        <div class="ticker-inner" id="ticker-inner">
+          <span class="ti">Loading latest reports…</span>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

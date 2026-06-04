@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>FitTrack</title>
+<title>Vision Create</title>
 <style>
 :root {
   --blue:#007AFF; --green:#34C759; --red:#FF3B30; --orange:#FF9500;
@@ -23,16 +23,17 @@
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 body{
   font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Segoe UI',system-ui,sans-serif;
+  font-weight:300;
   background:#111;display:flex;justify-content:center;align-items:center;
   min-height:100vh;overflow:hidden;transition:background .3s;
 }
 [data-theme="dark"] body{background:#000}
 .frame{
-  width:393px;height:852px;background:var(--bg);border-radius:50px;overflow:hidden;
+  width:393px;height:852px;background:var(--bg);border-radius:52px;overflow:hidden;
   position:relative;transition:var(--tr);
   box-shadow:0 50px 160px rgba(0,0,0,.75),inset 0 0 0 1.5px rgba(255,255,255,.12);
 }
-@media(max-height:900px){.frame{height:calc(100vh - 40px);border-radius:40px}}
+@media(max-height:900px){.frame{height:calc(100vh - 40px);border-radius:44px}}
 @media(max-width:430px){body{background:var(--bg);align-items:flex-start}.frame{width:100vw;height:100vh;height:100dvh;border-radius:0;box-shadow:none}}
 .app{width:100%;height:100%;display:flex;flex-direction:column;overflow:hidden;position:relative;background:var(--bg);transition:var(--tr)}
 
@@ -49,18 +50,18 @@ body{
 .nav{background:var(--nav-bg);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
   border-bottom:.5px solid var(--sep);padding:0 16px 10px;height:52px;
   display:flex;align-items:flex-end;flex-shrink:0;z-index:5;transition:var(--tr)}
-.nav-t{font-size:17px;font-weight:600;letter-spacing:-.4px;flex:1;text-align:center;color:var(--lbl)}
+.nav-t{font-size:17px;font-weight:600;letter-spacing:-.5px;flex:1;text-align:center;color:var(--lbl)}
 .nav-b{font-size:17px;color:var(--blue);cursor:pointer;min-width:60px;display:flex;
-  align-items:center;gap:3px;background:none;border:none;padding:0;font-family:inherit}
+  align-items:center;gap:3px;background:none;border:none;padding:0;font-family:inherit;font-weight:400}
 .nav-b.r{justify-content:flex-end}
 
 /* LARGE TITLE */
 .lt-area{display:flex;align-items:center;justify-content:space-between;padding:14px 20px 6px}
-.lt{font-size:34px;font-weight:800;letter-spacing:-.8px;color:var(--lbl);transition:var(--tr)}
+.lt{font-size:34px;font-weight:800;letter-spacing:-1px;color:var(--lbl);transition:var(--tr)}
 
-/* THEME TOGGLE SWITCH */
+/* THEME TOGGLE SWITCH – iOS compact */
 .theme-sw{
-  width:58px;height:32px;border-radius:16px;background:#E5E5EA;
+  width:44px;height:26px;border-radius:13px;background:#E5E5EA;
   position:relative;cursor:pointer;flex-shrink:0;border:none;padding:0;
   transition:background .35s cubic-bezier(.4,0,.2,1);
   box-shadow:inset 0 0 0 .5px rgba(0,0,0,.08);
@@ -69,20 +70,20 @@ body{
 [data-theme="dark"] .theme-sw{background:#5856D6;}
 .theme-sw-thumb{
   position:absolute;top:3px;left:3px;
-  width:26px;height:26px;border-radius:50%;
+  width:20px;height:20px;border-radius:50%;
   background:#fff;
   box-shadow:0 2px 8px rgba(0,0,0,.22),0 1px 3px rgba(0,0,0,.14);
   transition:transform .35s cubic-bezier(.34,1.3,.64,1);
   display:flex;align-items:center;justify-content:center;
-  font-size:14px;line-height:1;pointer-events:none;
+  font-size:11px;line-height:1;pointer-events:none;
 }
-[data-theme="dark"] .theme-sw-thumb{transform:translateX(26px);}
+[data-theme="dark"] .theme-sw-thumb{transform:translateX(18px);}
 .theme-sw-track-icons{
   position:absolute;inset:0;display:flex;
   align-items:center;justify-content:space-between;
-  padding:0 7px;pointer-events:none;
+  padding:0 6px;pointer-events:none;
 }
-.theme-sw-track-icons span{font-size:13px;line-height:1;transition:opacity .25s}
+.theme-sw-track-icons span{font-size:11px;line-height:1;transition:opacity .25s}
 .theme-sw-track-icons .ico-sun{opacity:1}
 .theme-sw-track-icons .ico-moon{opacity:0}
 [data-theme="dark"] .theme-sw-track-icons .ico-sun{opacity:0}
@@ -116,31 +117,31 @@ body{
 
 /* SECTIONS */
 .sec{margin:22px 16px 0}
-.sec-h{font-size:12px;font-weight:500;color:var(--gray);text-transform:uppercase;
-  letter-spacing:.7px;padding:0 6px 8px}
-.sec-b{background:var(--card);border-radius:14px;overflow:hidden;transition:var(--tr)}
+.sec-h{font-size:12px;font-weight:600;color:var(--gray);text-transform:uppercase;
+  letter-spacing:.8px;padding:0 6px 8px}
+.sec-b{background:var(--card);border-radius:16px;overflow:hidden;transition:var(--tr)}
 
 /* ROWS */
 .row{display:flex;align-items:center;padding:14px 16px;min-height:52px;cursor:pointer;
   position:relative;transition:background .1s}
 .row:active{background:var(--g5)}
 .row+.row::before{content:'';position:absolute;top:0;left:16px;right:0;height:.5px;background:var(--sep)}
-.row-ic{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;
+.row-ic{width:34px;height:34px;border-radius:10px;display:flex;align-items:center;
   justify-content:center;margin-right:14px;flex-shrink:0;font-size:18px}
 .row-bd{flex:1;min-width:0}
-.row-t{font-size:17px;letter-spacing:-.3px;color:var(--lbl)}
+.row-t{font-size:17px;font-weight:400;letter-spacing:-.3px;color:var(--lbl)}
 .row-s{font-size:13px;color:var(--gray);margin-top:2px;line-height:1.3}
 .row-r{color:var(--lbl3);font-size:20px;margin-left:6px}
 
 /* WORKOUT CARDS */
-.wcard{margin:14px 16px 0;background:var(--card);border-radius:18px;padding:18px;
+.wcard{margin:14px 16px 0;background:var(--card);border-radius:20px;padding:18px;
   cursor:pointer;position:relative;overflow:hidden;
   box-shadow:0 2px 12px rgba(0,0,0,.06);transition:transform .12s,background .28s,box-shadow .28s}
 [data-theme="dark"] .wcard{box-shadow:0 2px 16px rgba(0,0,0,.35)}
 .wcard:active{transform:scale(.975)}
-.wc-acc{position:absolute;top:0;right:0;width:90px;height:90px;border-radius:0 18px 0 60px;opacity:.1}
+.wc-acc{position:absolute;top:0;right:0;width:90px;height:90px;border-radius:0 20px 0 62px;opacity:.1}
 .wc-ico{font-size:30px;margin-bottom:10px;display:block}
-.wc-t{font-size:20px;font-weight:700;letter-spacing:-.4px;color:var(--lbl);margin-bottom:4px}
+.wc-t{font-size:20px;font-weight:700;letter-spacing:-.5px;color:var(--lbl);margin-bottom:4px}
 .wc-m{font-size:13px;color:var(--gray);margin-bottom:12px}
 .tags{display:flex;gap:6px;flex-wrap:wrap}
 .tag{font-size:12px;font-weight:500;padding:4px 10px;border-radius:100px;
@@ -151,7 +152,7 @@ body{
 .tag.pu{background:rgba(175,82,222,.12);color:var(--purple)}
 
 /* BUTTONS */
-.btn{display:flex;align-items:center;justify-content:center;height:52px;border-radius:14px;
+.btn{display:flex;align-items:center;justify-content:center;height:52px;border-radius:16px;
   font-size:17px;font-weight:600;cursor:pointer;border:none;font-family:inherit;
   letter-spacing:-.3px;width:100%;gap:8px;transition:opacity .12s,transform .1s}
 .btn:active{opacity:.82;transform:scale(.985)}
@@ -164,7 +165,7 @@ body{
 .ov{position:absolute;inset:0;background:rgba(0,0,0,.5);z-index:100;
   display:none;align-items:flex-end;backdrop-filter:blur(3px)}
 .ov.op{display:flex}
-.sheet{background:var(--card);border-radius:24px 24px 0 0;width:100%;
+.sheet{background:var(--card);border-radius:26px 26px 0 0;width:100%;
   padding:14px 20px 36px;transform:translateY(100%);
   transition:transform .36s cubic-bezier(.25,.46,.45,.94),background .28s;
   max-height:88%;overflow-y:auto}
@@ -175,9 +176,9 @@ body{
 /* INPUTS */
 .fld{margin-bottom:16px}
 .fld-l{font-size:12px;font-weight:600;color:var(--gray);text-transform:uppercase;
-  letter-spacing:.7px;margin-bottom:7px}
-.inp{width:100%;height:48px;background:var(--inp);border:none;border-radius:12px;
-  padding:0 14px;font-size:17px;font-family:inherit;color:var(--lbl);outline:none;
+  letter-spacing:.8px;margin-bottom:7px}
+.inp{width:100%;height:48px;background:var(--inp);border:none;border-radius:14px;
+  padding:0 14px;font-size:17px;font-family:inherit;font-weight:400;color:var(--lbl);outline:none;
   letter-spacing:-.2px;transition:var(--tr);-webkit-appearance:none;appearance:none}
 .inp:focus{background:var(--inp-f);box-shadow:0 0 0 3px rgba(0,122,255,.25)}
 .inp.err{background:rgba(255,59,48,.1);box-shadow:0 0 0 3px rgba(255,59,48,.3)}
@@ -186,22 +187,26 @@ body{
 .inp-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
 
 /* ICON PICKER */
-.ico-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:4px}
-.ico-opt{height:76px;border-radius:14px;background:var(--inp);border:2.5px solid transparent;
+.ico-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:4px;
+  max-height:280px;overflow-y:auto;padding-right:2px}
+.ico-grid::-webkit-scrollbar{display:none}
+.ico-opt{height:64px;border-radius:14px;background:var(--inp);border:2.5px solid transparent;
   cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;
-  gap:6px;transition:all .18s;font-family:inherit}
-.ico-opt:active{transform:scale(.94)}
+  gap:5px;transition:all .18s;font-family:inherit}
+.ico-opt:active{transform:scale(.93)}
 .ico-opt.sel{background:rgba(0,122,255,.1);border-color:var(--blue)}
-.ico-opt .ie{font-size:28px;line-height:1}
+.ico-opt .ie{font-size:26px;line-height:1}
 .ico-opt .il{font-size:10px;font-weight:500;color:var(--gray)}
 .ico-opt.sel .il{color:var(--blue)}
 
 /* CATEGORY CHIPS */
-.cat-wrap{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:4px}
-.cat-c{padding:8px 14px;border-radius:100px;background:var(--inp);border:2px solid transparent;
+.cat-wrap{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:4px;
+  max-height:130px;overflow-y:auto}
+.cat-wrap::-webkit-scrollbar{display:none}
+.cat-c{padding:7px 13px;border-radius:100px;background:var(--inp);border:2px solid transparent;
   font-size:14px;font-weight:500;cursor:pointer;color:var(--lbl);font-family:inherit;
   transition:all .18s}
-.cat-c:active{transform:scale(.94)}
+.cat-c:active{transform:scale(.93)}
 .cat-c.sel{background:rgba(0,122,255,.1);border-color:var(--blue);color:var(--blue)}
 
 /* REST PRESETS */
@@ -210,6 +215,36 @@ body{
   font-size:14px;font-weight:500;cursor:pointer;color:var(--lbl);font-family:inherit;transition:all .18s}
 .rp:active{transform:scale(.94)}
 .rp.sel{background:rgba(52,199,89,.12);border-color:var(--green);color:var(--green)}
+
+/* SEGMENT CONTROL */
+.seg-ctrl{display:flex;background:var(--g5);border-radius:10px;padding:2px;
+  margin:12px 16px 0;flex-shrink:0;transition:var(--tr)}
+.seg-btn{flex:1;height:30px;border:none;border-radius:8px;font-size:13px;font-weight:600;
+  font-family:inherit;cursor:pointer;color:var(--gray);background:transparent;
+  transition:all .22s cubic-bezier(.4,0,.2,1);letter-spacing:-.2px}
+.seg-btn.act{background:var(--card);color:var(--lbl);
+  box-shadow:0 1px 4px rgba(0,0,0,.12),0 0 0 .5px rgba(0,0,0,.05)}
+
+/* MONTH CALENDAR */
+.cal-month{padding:0 16px;margin-top:14px}
+.cal-month-title{font-size:20px;font-weight:700;letter-spacing:-.5px;color:var(--lbl);margin-bottom:10px}
+.cal-mh-row{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;margin-bottom:4px}
+.cal-mh{font-size:10px;font-weight:700;color:var(--gray);text-align:center;
+  text-transform:uppercase;letter-spacing:.5px;padding:3px 0}
+.cal-mgrid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px}
+.cal-mday{
+  height:46px;background:var(--card);border-radius:10px;
+  display:flex;flex-direction:column;align-items:center;justify-content:flex-start;
+  padding:5px 2px 3px;cursor:pointer;transition:transform .1s,background .2s;
+  border:1.5px solid transparent;overflow:hidden;
+}
+.cal-mday:active{transform:scale(.89)}
+.cal-mday.today{border-color:var(--blue);background:rgba(0,122,255,.07)}
+.cal-mday.other-month{opacity:.28}
+.cal-mday-num{font-size:12px;font-weight:600;color:var(--lbl);
+  width:22px;height:22px;display:flex;align-items:center;justify-content:center;border-radius:50%}
+.cal-mday.today .cal-mday-num{background:var(--blue);color:#fff}
+.cal-mday-ico{font-size:12px;line-height:1;margin-top:1px}
 
 /* ACTIVE WORKOUT */
 .wdark{background:#0A0A0A!important}
@@ -220,7 +255,7 @@ body{
 .tm-s{font-size:11px;color:rgba(255,255,255,.38);text-transform:uppercase;letter-spacing:1.5px;margin-top:5px}
 .ex-card{margin:14px 16px 0}
 .ex-hd{display:flex;align-items:center;margin-bottom:10px;gap:10px}
-.ex-ic{width:36px;height:36px;border-radius:10px;flex-shrink:0;
+.ex-ic{width:36px;height:36px;border-radius:11px;flex-shrink:0;
   display:flex;align-items:center;justify-content:center;font-size:18px}
 .ex-n{color:#fff;font-size:17px;font-weight:600;letter-spacing:-.3px}
 .ex-m{color:rgba(255,255,255,.4);font-size:12px;margin-top:1px}
@@ -255,14 +290,14 @@ body{
 .ra{width:130px;height:46px;border-radius:12px;border:none;background:rgba(255,255,255,.12);
   color:#fff;font-size:15px;font-weight:500;cursor:pointer;font-family:inherit;transition:background .12s}
 .ra:active{background:rgba(255,255,255,.22)}
-.rsk{width:272px;height:52px;border-radius:14px;border:none;background:var(--blue);
+.rsk{width:272px;height:52px;border-radius:16px;border:none;background:var(--blue);
   color:#fff;font-size:17px;font-weight:600;cursor:pointer;font-family:inherit;transition:opacity .12s}
 .rsk:active{opacity:.82}
 
-/* CALENDAR */
+/* CALENDAR WEEK VIEW */
 .cal-week{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;
   padding:0 16px;margin-top:16px}
-.cd{background:var(--card);border-radius:14px;padding:10px 3px;text-align:center;
+.cd{background:var(--card);border-radius:16px;padding:10px 3px;text-align:center;
   cursor:pointer;transition:transform .12s,background .28s;
   min-height:84px;display:flex;flex-direction:column;align-items:center;gap:5px;
   border:2px solid transparent}
@@ -279,7 +314,7 @@ body{
 
 /* STATS */
 .s-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:0 16px;margin-top:18px}
-.s-card{background:var(--card);border-radius:16px;padding:18px;transition:var(--tr)}
+.s-card{background:var(--card);border-radius:18px;padding:18px;transition:var(--tr)}
 .s-v{font-size:28px;font-weight:800;letter-spacing:-.6px}
 .s-l{font-size:13px;color:var(--gray);margin-top:3px}
 .bc{display:flex;align-items:flex-end;justify-content:space-between;
@@ -331,25 +366,29 @@ body{
     <div class="lt-area">
       <div class="lt">Meine Pläne</div>
       <button class="theme-sw" onclick="toggleTheme()" id="theme-sw" aria-label="Dark Mode">
-  <div class="theme-sw-track-icons"><span class="ico-sun">☀️</span><span class="ico-moon">🌙</span></div>
-  <div class="theme-sw-thumb"></div>
-</button>
+        <div class="theme-sw-track-icons"><span class="ico-sun">☀️</span><span class="ico-moon">🌙</span></div>
+        <div class="theme-sw-thumb"></div>
+      </button>
     </div>
     <div class="scroll tab" id="plans-scroll">
       <div id="plans-list"></div>
       <div style="height:90px"></div>
     </div>
-    <button class="fab" id="fab" onclick="openSheet('sh-plan')">+</button>
+    <button class="fab" id="fab" onclick="openPlanSheet()">+</button>
   </div>
 
   <!-- TAB: Kalender -->
   <div class="tab-s" id="tab-kalender">
     <div class="lt-area">
-      <div class="lt">Wochenplan</div>
+      <div class="lt">Kalender</div>
       <button class="theme-sw" onclick="toggleTheme()" aria-label="Dark Mode">
-  <div class="theme-sw-track-icons"><span class="ico-sun">☀️</span><span class="ico-moon">🌙</span></div>
-  <div class="theme-sw-thumb"></div>
-</button>
+        <div class="theme-sw-track-icons"><span class="ico-sun">☀️</span><span class="ico-moon">🌙</span></div>
+        <div class="theme-sw-thumb"></div>
+      </button>
+    </div>
+    <div class="seg-ctrl">
+      <button class="seg-btn act" id="cal-seg-week" onclick="setCalView('week')">Woche</button>
+      <button class="seg-btn" id="cal-seg-month" onclick="setCalView('month')">Monat</button>
     </div>
     <div class="scroll tab" id="cal-scroll">
       <div id="cal-body"></div>
@@ -362,9 +401,9 @@ body{
     <div class="lt-area">
       <div class="lt">Verlauf</div>
       <button class="theme-sw" onclick="toggleTheme()" aria-label="Dark Mode">
-  <div class="theme-sw-track-icons"><span class="ico-sun">☀️</span><span class="ico-moon">🌙</span></div>
-  <div class="theme-sw-thumb"></div>
-</button>
+        <div class="theme-sw-track-icons"><span class="ico-sun">☀️</span><span class="ico-moon">🌙</span></div>
+        <div class="theme-sw-thumb"></div>
+      </button>
     </div>
     <div class="scroll tab" id="hist-scroll">
       <div id="hist-list"></div>
@@ -377,9 +416,9 @@ body{
     <div class="lt-area">
       <div class="lt">Statistiken</div>
       <button class="theme-sw" onclick="toggleTheme()" aria-label="Dark Mode">
-  <div class="theme-sw-track-icons"><span class="ico-sun">☀️</span><span class="ico-moon">🌙</span></div>
-  <div class="theme-sw-thumb"></div>
-</button>
+        <div class="theme-sw-track-icons"><span class="ico-sun">☀️</span><span class="ico-moon">🌙</span></div>
+        <div class="theme-sw-thumb"></div>
+      </button>
     </div>
     <div class="scroll tab" id="stats-scroll">
       <div id="stats-body"></div>
@@ -501,29 +540,16 @@ body{
 <div class="ov" id="sh-plan" onclick="closeSheet('sh-plan')">
   <div class="sheet" onclick="event.stopPropagation()">
     <div class="sh-handle"></div>
-    <div class="sh-t">Neuer Trainingsplan</div>
+    <div class="sh-t">Neuer Plan</div>
 
     <div class="fld">
-      <div class="fld-l">Icon</div>
-      <div class="ico-grid" id="ico-grid">
-        <button class="ico-opt sel" data-ico="arm" onclick="selIco(this)">
-          <span class="ie">💪</span><span class="il">Kraft</span>
-        </button>
-        <button class="ico-opt" data-ico="legs" onclick="selIco(this)">
-          <span class="ie">🦵</span><span class="il">Beine</span>
-        </button>
-        <button class="ico-opt" data-ico="upper" onclick="selIco(this)">
-          <span class="ie">🏋️</span><span class="il">Oberkörper</span>
-        </button>
-        <button class="ico-opt" data-ico="cardio" onclick="selIco(this)">
-          <span class="ie">🏃</span><span class="il">Kardio</span>
-        </button>
-      </div>
+      <div class="fld-l">Icon &amp; Sportart</div>
+      <div class="ico-grid" id="ico-grid"></div>
     </div>
 
     <div class="fld">
       <div class="fld-l">Name</div>
-      <input class="inp" id="inp-pname" placeholder="z.B. Push Day, Bein Tag…" type="text">
+      <input class="inp" id="inp-pname" placeholder="z.B. Push Day, Lauftraining…" type="text">
     </div>
 
     <div class="fld">
@@ -545,6 +571,20 @@ body{
         <button class="cat-c" onclick="selCat(this)">Yoga</button>
         <button class="cat-c" onclick="selCat(this)">Stretching</button>
         <button class="cat-c" onclick="selCat(this)">Kampfsport</button>
+        <button class="cat-c" onclick="selCat(this)">Fußball</button>
+        <button class="cat-c" onclick="selCat(this)">Basketball</button>
+        <button class="cat-c" onclick="selCat(this)">Tennis</button>
+        <button class="cat-c" onclick="selCat(this)">Schwimmen</button>
+        <button class="cat-c" onclick="selCat(this)">Radfahren</button>
+        <button class="cat-c" onclick="selCat(this)">Boxen</button>
+        <button class="cat-c" onclick="selCat(this)">Wandern</button>
+        <button class="cat-c" onclick="selCat(this)">Klettern</button>
+        <button class="cat-c" onclick="selCat(this)">Skifahren</button>
+        <button class="cat-c" onclick="selCat(this)">Surfen</button>
+        <button class="cat-c" onclick="selCat(this)">Snowboard</button>
+        <button class="cat-c" onclick="selCat(this)">Volleyball</button>
+        <button class="cat-c" onclick="selCat(this)">Handball</button>
+        <button class="cat-c" onclick="selCat(this)">Golf</button>
       </div>
     </div>
 
@@ -638,13 +678,38 @@ body{
 
 <script>
 // ═══════════════════════════════════════════
-// STATE
+// ICONS & CATEGORIES
 // ═══════════════════════════════════════════
-const ICONS = { arm:'💪', legs:'🦵', upper:'🏋️', cardio:'🏃' };
+const ICON_LIST = [
+  {key:'arm',      emoji:'💪', label:'Kraft'},
+  {key:'upper',    emoji:'🏋️', label:'Oberkörper'},
+  {key:'legs',     emoji:'🦵', label:'Beine'},
+  {key:'cardio',   emoji:'🏃', label:'Laufen'},
+  {key:'yoga',     emoji:'🧘', label:'Yoga'},
+  {key:'bike',     emoji:'🚴', label:'Radfahren'},
+  {key:'swim',     emoji:'🏊', label:'Schwimmen'},
+  {key:'boxing',   emoji:'🥊', label:'Boxen'},
+  {key:'martial',  emoji:'🥋', label:'Kampfsport'},
+  {key:'soccer',   emoji:'⚽', label:'Fußball'},
+  {key:'basketball',emoji:'🏀',label:'Basketball'},
+  {key:'tennis',   emoji:'🎾', label:'Tennis'},
+  {key:'volleyball',emoji:'🏐',label:'Volleyball'},
+  {key:'handball', emoji:'🤾', label:'Handball'},
+  {key:'hike',     emoji:'🥾', label:'Wandern'},
+  {key:'climb',    emoji:'🧗', label:'Klettern'},
+  {key:'surf',     emoji:'🏄', label:'Surfen'},
+  {key:'ski',      emoji:'⛷️', label:'Skifahren'},
+  {key:'snowboard',emoji:'🏂', label:'Snowboard'},
+  {key:'golf',     emoji:'⛳', label:'Golf'},
+];
+const ICONS = Object.fromEntries(ICON_LIST.map(i=>[i.key,i.emoji]));
+
 const MONTHS = ['Jan','Feb','Mär','Apr','Mai','Jun','Jul','Aug','Sep','Okt','Nov','Dez'];
+const MONTH_NAMES = ['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'];
 const DAYS = ['So','Mo','Di','Mi','Do','Fr','Sa'];
+const DNAMES = ['Sonntag','Montag','Dienstag','Mittwoch','Donnerstag','Freitag','Samstag'];
 const COLORS = ['#007AFF','#34C759','#FF9500','#FF2D55','#AF52DE','#5AC8FA','#FF6B35','#32ADE6'];
-const CIRC = 2*Math.PI*88; // 552.9
+const CIRC = 2*Math.PI*88;
 
 let S = {
   plans: [], history: [],
@@ -733,6 +798,25 @@ function closeSheet(id) { document.getElementById(id).classList.remove('op'); }
 let selIcon = 'arm', selCategory = 'Kraft';
 let selRestPlan = 60, selRestEx = 60;
 
+function buildIconPicker() {
+  const grid = document.getElementById('ico-grid');
+  grid.innerHTML = ICON_LIST.map(ic=>`
+    <button class="ico-opt${selIcon===ic.key?' sel':''}" data-ico="${ic.key}" onclick="selIco(this)">
+      <span class="ie">${ic.emoji}</span><span class="il">${ic.label}</span>
+    </button>`).join('');
+}
+
+function openPlanSheet() {
+  selIcon = 'arm'; selCategory = 'Kraft'; selRestPlan = 60;
+  buildIconPicker();
+  // reset category selection
+  document.querySelectorAll('#cat-wrap .cat-c').forEach((e,i)=>e.classList.toggle('sel',i===0));
+  // reset rest selection
+  document.querySelectorAll('#rest-wrap-plan .rp').forEach(e=>e.classList.toggle('sel',e.dataset.v==='60'));
+  document.getElementById('inp-pname').value='';
+  openSheet('sh-plan');
+}
+
 function selIco(el) {
   document.querySelectorAll('#ico-grid .ico-opt').forEach(e=>e.classList.remove('sel'));
   el.classList.add('sel'); selIcon = el.dataset.ico;
@@ -760,7 +844,7 @@ function exCol(i) { return COLORS[i%COLORS.length]; }
 function renderPlans() {
   const el=document.getElementById('plans-list');
   if(!S.plans.length) {
-    el.innerHTML=`<div class="empty"><div class="ei">💪</div><div class="eh">Noch keine Pläne</div><div class="ep">Tippe auf <strong>+</strong> um deinen ersten Trainingsplan zu erstellen</div></div>`;
+    el.innerHTML=`<div class="empty"><div class="ei">💪</div><div class="eh">Noch keine Pläne</div><div class="ep">Tippe auf <strong>+</strong> um deinen ersten Plan zu erstellen</div></div>`;
     return;
   }
   el.innerHTML=S.plans.map((p,i)=>{
@@ -772,7 +856,7 @@ function renderPlans() {
     })():'';
     return `<div class="wcard fu" style="animation-delay:${i*.06}s" onclick="openPlan('${p.id}')">
       <div class="wc-acc" style="background:${col}"></div>
-      <span class="wc-ico">${ICONS[p.icon||'arm']}</span>
+      <span class="wc-ico">${ICONS[p.icon||'arm']||'💪'}</span>
       <div class="wc-t">${esc(p.name)}</div>
       <div class="wc-m">${p.exercises.length} Übung${p.exercises.length!==1?'en':''} · ${p.category} · Pause: ${fmtSec(p.defaultRest||60)}</div>
       <div class="tags">
@@ -790,8 +874,6 @@ function addPlan() {
   S.plans.push({id:uid(),name,category:selCategory,icon:selIcon,
     defaultRest:selRestPlan,exercises:[],createdAt:Date.now()});
   saveS(); closeSheet('sh-plan'); renderPlans();
-  // reset
-  document.getElementById('inp-pname').value='';
 }
 
 let curPlan=null;
@@ -996,47 +1078,57 @@ function closeSum(){goBack();}
 // CALENDAR
 // ═══════════════════════════════════════════
 let calDay=null;
+let calView='week';
+
+function setCalView(v) {
+  calView=v;
+  document.getElementById('cal-seg-week').classList.toggle('act',v==='week');
+  document.getElementById('cal-seg-month').classList.toggle('act',v==='month');
+  renderCal();
+}
 
 function renderCal() {
+  if(calView==='month') renderMonthCal();
+  else renderWeekCal();
+}
+
+function renderWeekCal() {
   const now=new Date();
-  // Build 7-day week starting Monday
-  const dow=now.getDay(); // 0=Sun
+  const dow=now.getDay();
   const mon=new Date(now); mon.setDate(now.getDate()-((dow+6)%7));
 
   let html='<div style="padding:0 16px;margin-top:18px">';
-  html+='<div style="font-size:12px;font-weight:600;color:var(--gray);text-transform:uppercase;letter-spacing:.7px;margin-bottom:10px">Diese Woche</div>';
+  html+='<div style="font-size:12px;font-weight:600;color:var(--gray);text-transform:uppercase;letter-spacing:.8px;margin-bottom:10px">Diese Woche</div>';
   html+='<div class="cal-week">';
 
   for(let i=0;i<7;i++){
     const d=new Date(mon); d.setDate(mon.getDate()+i);
-    const dw=d.getDay(); // 0-6
+    const dw=d.getDay();
     const isToday=d.toDateString()===now.toDateString();
     const pid=S.schedule[dw];
     const plan=pid?S.plans.find(p=>p.id===pid):null;
     const col=plan?hcol(plan.id):'transparent';
 
-    html+=`<div class="cd${isToday?' today':''}" onclick="openCalDay(${dw},'${DAYS[dw]}')">
+    html+=`<div class="cd${isToday?' today':''}" onclick="openCalDay(${dw},'${DNAMES[dw]}')">
       <div class="cd-dn">${DAYS[dw]}</div>
       <div class="cd-num">${d.getDate()}</div>
-      ${plan?`<div class="cd-pi">${ICONS[plan.icon||'arm']}</div>
+      ${plan?`<div class="cd-pi">${ICONS[plan.icon||'arm']||'💪'}</div>
               <div class="cd-pl" style="background:${col}">${esc(plan.name)}</div>`
             :`<div style="font-size:16px;opacity:.2">+</div>`}
     </div>`;
   }
   html+='</div></div>';
 
-  // Upcoming week schedule summary
   html+='<div class="sec"><div class="sec-h">Wochenübersicht</div><div class="sec-b">';
-  const dnames=['Sonntag','Montag','Dienstag','Mittwoch','Donnerstag','Freitag','Samstag'];
   [1,2,3,4,5,6,0].forEach(dw=>{
     const pid=S.schedule[dw];
     const plan=pid?S.plans.find(p=>p.id===pid):null;
-    html+=`<div class="row" onclick="openCalDay(${dw},'${dnames[dw]}')">
+    html+=`<div class="row" onclick="openCalDay(${dw},'${DNAMES[dw]}')">
       <div class="row-ic" style="background:${plan?hcol(plan.id)+'22':'var(--g5)'};color:${plan?hcol(plan.id):'var(--gray)'}">
-        ${plan?ICONS[plan.icon||'arm']:'—'}
+        ${plan?ICONS[plan.icon||'arm']||'💪':'—'}
       </div>
       <div class="row-bd">
-        <div class="row-t">${dnames[dw]}</div>
+        <div class="row-t">${DNAMES[dw]}</div>
         <div class="row-s">${plan?esc(plan.name)+' · '+plan.exercises.length+' Übungen':'Ruhetag'}</div>
       </div>
       <div class="row-r" style="font-size:14px;color:var(--blue)">Ändern</div>
@@ -1047,20 +1139,78 @@ function renderCal() {
   document.getElementById('cal-body').innerHTML=html;
 }
 
+function renderMonthCal() {
+  const now=new Date();
+  const year=now.getFullYear();
+  const month=now.getMonth();
+
+  const firstDay=new Date(year,month,1);
+  const startDow=firstDay.getDay();
+  const startOffset=(startDow+6)%7;
+  const start=new Date(firstDay);
+  start.setDate(firstDay.getDate()-startOffset);
+
+  let html=`<div class="cal-month">`;
+  html+=`<div class="cal-month-title">${MONTH_NAMES[month]} ${year}</div>`;
+
+  html+=`<div class="cal-mh-row">`;
+  ['Mo','Di','Mi','Do','Fr','Sa','So'].forEach(d=>{ html+=`<div class="cal-mh">${d}</div>`; });
+  html+=`</div>`;
+
+  html+=`<div class="cal-mgrid">`;
+  for(let i=0;i<42;i++){
+    const d=new Date(start);
+    d.setDate(start.getDate()+i);
+    const isCurMon=d.getMonth()===month;
+    const isToday=d.toDateString()===now.toDateString();
+    const dw=d.getDay();
+    const pid=S.schedule[dw];
+    const plan=pid?S.plans.find(p=>p.id===pid):null;
+
+    html+=`<div class="cal-mday${isToday?' today':''}${!isCurMon?' other-month':''}" onclick="openCalDay(${dw},'${DNAMES[dw]}')">`;
+    html+=`<div class="cal-mday-num">${d.getDate()}</div>`;
+    if(plan&&isCurMon){
+      html+=`<div class="cal-mday-ico">${ICONS[plan.icon||'arm']||'💪'}</div>`;
+    }
+    html+=`</div>`;
+  }
+  html+=`</div></div>`;
+
+  // Wochenplan-Legende
+  html+=`<div class="sec"><div class="sec-h">Wochenplan</div><div class="sec-b">`;
+  [1,2,3,4,5,6,0].forEach(dw=>{
+    const pid=S.schedule[dw];
+    const plan=pid?S.plans.find(p=>p.id===pid):null;
+    html+=`<div class="row" onclick="openCalDay(${dw},'${DNAMES[dw]}')">
+      <div class="row-ic" style="background:${plan?hcol(plan.id)+'22':'var(--g5)'};color:${plan?hcol(plan.id):'var(--gray)'}">
+        ${plan?ICONS[plan.icon||'arm']||'💪':'—'}
+      </div>
+      <div class="row-bd">
+        <div class="row-t">${DNAMES[dw]}</div>
+        <div class="row-s">${plan?esc(plan.name):'Ruhetag'}</div>
+      </div>
+      <div class="row-r" style="font-size:14px;color:var(--blue)">Ändern</div>
+    </div>`;
+  });
+  html+=`</div></div>`;
+
+  document.getElementById('cal-body').innerHTML=html;
+}
+
 function openCalDay(dw, label) {
   calDay=dw;
   document.getElementById('sh-cal-title').textContent=label+' planen';
   const cur=S.schedule[dw];
   document.getElementById('sh-cal-list').innerHTML=`
     <div class="sec-b" style="overflow:hidden;border-radius:14px">
-      <div class="row${!cur?' row':''}" onclick="setCalDay(null)" style="${!cur?'background:rgba(52,199,89,.08)':''}">
+      <div class="row" onclick="setCalDay(null)" style="${!cur?'background:rgba(52,199,89,.08)':''}">
         <div class="row-ic" style="background:var(--g5);font-size:20px">😴</div>
         <div class="row-bd"><div class="row-t">Ruhetag</div><div class="row-s">Kein Training</div></div>
         ${!cur?'<div style="color:var(--green);font-size:18px;font-weight:700">✓</div>':''}
       </div>
       ${S.plans.map(p=>`
         <div class="row" onclick="setCalDay('${p.id}')" style="${cur===p.id?'background:rgba(0,122,255,.08)':''}">
-          <div class="row-ic" style="background:${hcol(p.id)}22;color:${hcol(p.id)}">${ICONS[p.icon||'arm']}</div>
+          <div class="row-ic" style="background:${hcol(p.id)}22;color:${hcol(p.id)}">${ICONS[p.icon||'arm']||'💪'}</div>
           <div class="row-bd">
             <div class="row-t">${esc(p.name)}</div>
             <div class="row-s">${p.category} · ${p.exercises.length} Übungen</div>
@@ -1158,7 +1308,7 @@ function renderStats() {
         ${S.plans.map(p=>{
           const cnt=S.history.filter(h=>h.planId===p.id).length;
           return `<div class="row" onclick="switchTab('training');openPlan('${p.id}')">
-            <div class="row-ic" style="background:${hcol(p.id)}22;color:${hcol(p.id)}">${ICONS[p.icon||'arm']}</div>
+            <div class="row-ic" style="background:${hcol(p.id)}22;color:${hcol(p.id)}">${ICONS[p.icon||'arm']||'💪'}</div>
             <div class="row-bd">
               <div class="row-t">${esc(p.name)}</div>
               <div class="row-s">${cnt}× durchgeführt · ${p.exercises.length} Übungen</div>
@@ -1195,7 +1345,6 @@ function shake(id){
   el.focus();
 }
 
-// Enter key support
 document.addEventListener('keydown',e=>{
   if(e.key!=='Enter') return;
   if(document.getElementById('sh-plan').classList.contains('op')) addPlan();
@@ -1207,6 +1356,7 @@ document.addEventListener('keydown',e=>{
 // ═══════════════════════════════════════════
 loadS();
 applyTheme(S.theme||'light');
+buildIconPicker();
 
 if(!S.plans.length) {
   S.plans=[
@@ -1231,7 +1381,6 @@ if(!S.plans.length) {
       {id:'ec',name:'Springseil',sets:5,reps:100,weight:0,rest:30},
     ]},
   ];
-  // Demo Wochenplan
   S.schedule={0:null,1:'p1',2:'p2',3:null,4:'p3',5:'p1',6:'p4'};
   saveS();
 }

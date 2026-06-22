@@ -51,6 +51,11 @@
       </div>
 
       <div class="s-section">
+        <div class="s-title">Trade &amp; Shipping</div>
+        <div id="trade-filter-list"></div>
+      </div>
+
+      <div class="s-section">
         <div class="s-title">Legend</div>
         <div class="legend-row"><span class="ldot" style="background:#ff2244;box-shadow:0 0 5px #ff2244"></span>Armed Conflict / War</div>
         <div class="legend-row"><span class="ldot" style="background:#ff6600;box-shadow:0 0 5px #ff6600"></span>Terrorism / Attacks</div>
@@ -59,7 +64,11 @@
         <div class="legend-row"><span class="ldot" style="background:#bb44ff;box-shadow:0 0 5px #bb44ff"></span>Disease / Outbreak</div>
         <div class="legend-sep"></div>
         <div class="legend-row"><span class="front-icon">╌╌</span>Ukraine Front Line (est.)</div>
-        <div class="legend-note">Ring size = Severity (1–10)<br>Zoom in for building-level detail</div>
+        <div class="legend-row"><span class="front-icon" style="color:#30d158">➜</span>Trade Route</div>
+        <div class="legend-row"><span class="ldot" style="background:#0a84ff;box-shadow:0 0 5px #0a84ff"></span>Container Ship</div>
+        <div class="legend-row"><span class="ldot" style="background:#ff9f0a;box-shadow:0 0 5px #ff9f0a"></span>Oil Tanker</div>
+        <div class="legend-row"><span class="ldot" style="background:#bf5af2;box-shadow:0 0 5px #bf5af2"></span>LNG Tanker</div>
+        <div class="legend-note">Ring size = Severity (1–10)<br>Click a country or ship for details</div>
       </div>
 
       <div class="s-section">
@@ -95,6 +104,15 @@
         </div>
         <p class="popup-desc" id="p-desc"></p>
         <div class="popup-sev"><span>Severity</span><div class="sev-bar" id="p-sev"></div></div>
+      </div>
+      <div class="popup" id="info-popup">
+        <div class="popup-head">
+          <div class="popup-name" id="i-name"></div>
+          <button class="popup-close" onclick="closeInfoPopup()">✕</button>
+        </div>
+        <div class="popup-badge" id="i-badge"></div>
+        <div class="popup-rows" id="i-rows"></div>
+        <p class="popup-desc" id="i-desc"></p>
       </div>
     </main>
 

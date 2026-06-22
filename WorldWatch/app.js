@@ -53,6 +53,98 @@ const UKRAINE_FRONT_COORDS = [
   38.1,49.9, 37.7,50.2, 37.3,50.5, 36.9,50.85, 36.6,51.1,
 ];
 
+// ── Country Info ─────────────────────────────────────────────────────────
+// Political/fiscal data not present in the Natural Earth borders GeoJSON
+// (which only carries POP_EST / GDP_MD_EST). Curated static snapshot — like
+// the news/stock fallback data elsewhere in this file, real-world leadership
+// and debt figures shift over time and there is no live API for this, so
+// treat it as illustrative rather than continuously up to date.
+const COUNTRY_INFO = {
+  USA: { leader:'Donald Trump',          party:'Republican Party',        orientation:'Rechts / Populistisch-konservativ',     debtGdp:123 },
+  DEU: { leader:'Friedrich Merz',        party:'CDU/CSU',                 orientation:'Mitte-rechts / Christdemokratisch',     debtGdp:63  },
+  FRA: { leader:'Emmanuel Macron',       party:'Renaissance',             orientation:'Mitte / Liberal',                       debtGdp:112 },
+  GBR: { leader:'Keir Starmer',          party:'Labour Party',            orientation:'Mitte-links / Sozialdemokratisch',      debtGdp:100 },
+  RUS: { leader:'Vladimir Putin',        party:'Einiges Russland',        orientation:'Autoritär / Nationalistisch',           debtGdp:20  },
+  CHN: { leader:'Xi Jinping',            party:'Kommunistische Partei',   orientation:'Autoritär / Kommunistisch',             debtGdp:88  },
+  UKR: { leader:'Volodymyr Zelensky',    party:'Diener des Volkes',       orientation:'Mitte / Pro-westlich',                  debtGdp:95  },
+  ITA: { leader:'Giorgia Meloni',        party:'Fratelli d’Italia',  orientation:'Rechts / National-konservativ',         debtGdp:137 },
+  ESP: { leader:'Pedro Sánchez',         party:'PSOE',                    orientation:'Mitte-links / Sozialdemokratisch',      debtGdp:105 },
+  POL: { leader:'Donald Tusk',           party:'Koalicja Obywatelska',    orientation:'Mitte / Liberal-konservativ',           debtGdp:55  },
+  IND: { leader:'Narendra Modi',         party:'BJP',                     orientation:'Rechts / Nationalistisch',              debtGdp:83  },
+  JPN: { leader:'Shigeru Ishiba',        party:'LDP',                     orientation:'Mitte-rechts / Konservativ',            debtGdp:255 },
+  KOR: { leader:'Lee Jae-myung',         party:'Demokratische Partei',    orientation:'Mitte-links / Liberal',                 debtGdp:50  },
+  BRA: { leader:'Luiz Inácio Lula da Silva', party:'Partido dos Trabalhadores', orientation:'Links / Sozialdemokratisch',      debtGdp:85  },
+  MEX: { leader:'Claudia Sheinbaum',     party:'Morena',                  orientation:'Links / Populistisch',                  debtGdp:52  },
+  CAN: { leader:'Mark Carney',           party:'Liberal Party',           orientation:'Mitte / Liberal',                       debtGdp:107 },
+  AUS: { leader:'Anthony Albanese',      party:'Labor Party',             orientation:'Mitte-links / Sozialdemokratisch',      debtGdp:50  },
+  SAU: { leader:'König Salman / Kronprinz MbS', party:'Absolute Monarchie', orientation:'Autoritär / Konservativ',            debtGdp:26  },
+  EGY: { leader:'Abdel Fattah el-Sisi',  party:'Militärnah / unabhängig', orientation:'Autoritär',                             debtGdp:96  },
+  ZAF: { leader:'Cyril Ramaphosa',       party:'ANC (Koalitionsregierung)', orientation:'Mitte-links / Sozialdemokratisch',    debtGdp:75  },
+  NGA: { leader:'Bola Tinubu',           party:'APC',                     orientation:'Mitte-rechts',                          debtGdp:52  },
+  ARG: { leader:'Javier Milei',          party:'La Libertad Avanza',      orientation:'Rechts / Libertär',                     debtGdp:155 },
+  IDN: { leader:'Prabowo Subianto',      party:'Gerindra',                orientation:'Rechts / Nationalistisch',              debtGdp:39  },
+  PAK: { leader:'Shehbaz Sharif',        party:'PML-N',                   orientation:'Mitte / Konservativ',                   debtGdp:74  },
+  VNM: { leader:'Tô Lâm',                party:'Kommunistische Partei',   orientation:'Autoritär / Kommunistisch',             debtGdp:34  },
+  THA: { leader:'Paetongtarn Shinawatra', party:'Pheu Thai',              orientation:'Mitte / Populistisch',                  debtGdp:64  },
+  NLD: { leader:'Dick Schoof',           party:'Parteilos (PVV-Koalition)', orientation:'Rechte Koalition',                    debtGdp:46  },
+  SWE: { leader:'Ulf Kristersson',       party:'Moderaterna',             orientation:'Mitte-rechts / Konservativ',            debtGdp:33  },
+  NOR: { leader:'Jonas Gahr Støre',      party:'Arbeiderpartiet',         orientation:'Mitte-links',                           debtGdp:42  },
+  CHE: { leader:'Bundesrat (Kollegium)', party:'Mehrparteienregierung',   orientation:'Mitte',                                 debtGdp:18  },
+  TUR: { leader:'Recep Tayyip Erdoğan',  party:'AKP',                     orientation:'Rechts / National-konservativ',         debtGdp:28  },
+  ISR: { leader:'Benjamin Netanyahu',    party:'Likud',                   orientation:'Rechts / National-konservativ',         debtGdp:62  },
+  IRN: { leader:'Masoud Pezeshkian / Ali Khamenei', party:'Theokratie',   orientation:'Autoritär / Theokratisch',              debtGdp:30  },
+  SDN: { leader:'Abdel Fattah al-Burhan (Übergangsrat)', party:'Militärjunta', orientation:'Autoritär / Militärisch',          debtGdp:250 },
+  ETH: { leader:'Abiy Ahmed',            party:'Wohlstandspartei',        orientation:'Mitte / Nationalistisch',               debtGdp:50  },
+  SOM: { leader:'Hassan Sheikh Mohamud', party:'Föderalregierung',        orientation:'Mitte',                                 debtGdp:7   },
+  MMR: { leader:'Min Aung Hlaing (Militärjunta)', party:'Verwaltungsrat', orientation:'Autoritär / Militärisch',              debtGdp:25  },
+  COD: { leader:'Félix Tshisekedi',      party:'UDPS',                    orientation:'Mitte',                                 debtGdp:15  },
+  YEM: { leader:'Rashad al-Alimi (Präsidialrat) / Houthis (Nord)', party:'Geteilte Übergangsregierung', orientation:'Gespalten', debtGdp:80 },
+  SYR: { leader:'Ahmed al-Sharaa (Übergangspräsident)', party:'Übergangsregierung', orientation:'Im Umbruch',                 debtGdp:150 },
+  LBN: { leader:'Joseph Aoun',           party:'Parteilos / Mehrkonfessionell', orientation:'Mitte-Koalition',                debtGdp:170 },
+  LBY: { leader:'Abdul Hamid Dbeibah (West) / Rivalisierende Ostregierung', party:'Geteilt', orientation:'Gespalten',         debtGdp:4   },
+  HTI: { leader:'Übergangspräsidialrat', party:'Übergangsregierung',      orientation:'Übergangsphase',                        debtGdp:30  },
+  COL: { leader:'Gustavo Petro',         party:'Pacto Histórico',         orientation:'Links',                                 debtGdp:55  },
+};
+
+// ── Global Trade Routes (illustrative major corridors) ───────────────────
+const TRADE_ROUTES = [
+  { name:'Asien–Europa (Suez)',        color:'#30d158', coords:[121.5,31.2, 103.8,1.3, 32.5,29.9, 4.5,51.9] },
+  { name:'Transpazifik (China–USA)',   color:'#0a84ff', coords:[121.5,31.2, -118.2,33.7] },
+  { name:'Transatlantik (USA–Europa)', color:'#0a84ff', coords:[-74.0,40.7, 4.5,51.9] },
+  { name:'Persischer Golf–Asien (Öl)', color:'#ff9f0a', coords:[56.3,26.5, 121.5,31.2] },
+  { name:'Persischer Golf–Europa (Öl)', color:'#ff9f0a', coords:[56.3,26.5, 4.5,51.9] },
+  { name:'Russland–China (Energie)',   color:'#ff9f0a', coords:[142.0,53.0, 121.5,31.2] },
+  { name:'Australien–China (Erz)',     color:'#ffd60a', coords:[115.9,-31.9, 121.5,31.2] },
+  { name:'Brasilien–China (Agrar/Erz)', color:'#ffd60a', coords:[-46.3,-23.9, 121.5,31.2] },
+  { name:'Indien–Europa',              color:'#30d158', coords:[72.8,19.0, 32.5,29.9, 4.5,51.9] },
+  { name:'USA–Ostasien',               color:'#0a84ff', coords:[-118.2,33.7, 139.7,35.6] },
+];
+
+// ── Ships (illustrative static positions along major shipping lanes) ─────
+const SHIP_TYPE = {
+  container: { color:'#0a84ff', label:'Containerschiff' },
+  tanker:    { color:'#ff9f0a', label:'Öltanker' },
+  lng:       { color:'#bf5af2', label:'LNG-Tanker' },
+};
+const SHIPS = [
+  { name:'Ever Ace',              type:'container', cargo:'Container (24.000 TEU)', flag:'Panama',      lat:29.9,  lng:32.5,   route:'Asien–Europa (Suez)' },
+  { name:'MSC Gülsün',            type:'container', cargo:'Container (23.500 TEU)', flag:'Panama',      lat:2.5,   lng:101.5,  route:'Straße von Malakka' },
+  { name:'OOCL Hong Kong',        type:'container', cargo:'Container (21.400 TEU)', flag:'Hongkong',    lat:20.0,  lng:-160.0, route:'Asien–USA (Pazifik)' },
+  { name:'CMA CGM Marco Polo',    type:'container', cargo:'Container (18.000 TEU)', flag:'Malta',       lat:35.0,  lng:-40.0,  route:'Transatlantik' },
+  { name:'COSCO Shipping Universe', type:'container', cargo:'Container (21.000 TEU)', flag:'China',     lat:15.0,  lng:113.0,  route:'Südchinesisches Meer' },
+  { name:'Maersk Madrid',         type:'container', cargo:'Container (16.000 TEU)', flag:'Dänemark',    lat:50.5,  lng:1.5,    route:'Ärmelkanal' },
+  { name:'HMM Algeciras',         type:'container', cargo:'Container (23.900 TEU)', flag:'Südkorea',    lat:36.0,  lng:-6.0,   route:'Straße von Gibraltar' },
+  { name:'Yang Ming Warranty',    type:'container', cargo:'Container (14.000 TEU)', flag:'Taiwan',      lat:9.1,   lng:-79.7,  route:'Panama-Kanal' },
+  { name:'Front Altair',          type:'tanker',    cargo:'Rohöl (~2 Mio. Barrel)', flag:'Marshallinseln', lat:26.2, lng:56.7, route:'Straße von Hormus' },
+  { name:'TI Europe',             type:'tanker',    cargo:'Rohöl (VLCC, ~3 Mio. Barrel)', flag:'Belgien', lat:26.6, lng:50.2, route:'Ras Tanura' },
+  { name:'Sonangol Sangos',       type:'tanker',    cargo:'Rohöl (Westafrika)', flag:'Angola',          lat:3.0,   lng:7.0,    route:'Golf von Guinea' },
+  { name:'Eagle Ford',            type:'tanker',    cargo:'Rohöl (US-Export)', flag:'USA',              lat:26.0,  lng:-90.0,  route:'Golf von Mexiko' },
+  { name:'NS Leader',             type:'tanker',    cargo:'Rohöl (russischer Export)', flag:'Russland', lat:58.0,  lng:20.0,   route:'Ostsee' },
+  { name:'Suez Rajan',            type:'tanker',    cargo:'Rohöl', flag:'Marshallinseln',                lat:20.0,  lng:38.0,   route:'Rotes Meer' },
+  { name:'Yamal Spirit',          type:'lng',       cargo:'Flüssigerdgas (LNG)', flag:'Russland',        lat:72.0,  lng:70.0,   route:'Karasee (Arktis)' },
+  { name:'Al Gattara',            type:'lng',       cargo:'Flüssigerdgas (LNG)', flag:'Katar',           lat:25.0,  lng:52.0,   route:'Persischer Golf' },
+];
+
 // ── Stock Config ──────────────────────────────────────────────────────────
 const STOCKS_TO_FETCH = [
   { symbol:'^GDAXI',   name:'DAX'      }, { symbol:'^DJI',     name:'DOW'      },
@@ -129,11 +221,16 @@ let newsMode     = 'world';
 let fetching     = false;
 let autoRotate   = true;
 let rotateTimer  = null;
+let tradeRoutesVisible = true;
+let shipsVisible = true;
 const allEntities = []; // { dot, rings[], event }
+const tradeRouteEntities = [];
+const shipEntities = [];
 
 // ── Boot ──────────────────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
   buildFilters();
+  buildTradeFilters();
   buildNewsTabs('world');
   try {
     initGlobe();
@@ -164,9 +261,18 @@ function showGlobeError(message) {
 }
 
 // ── CesiumJS Globe ────────────────────────────────────────────────────────
+// Optional: paste a free Cesium ion access token (cesium.com/ion → Access
+// Tokens) here to enable real 3D OSM building extrusions on close zoom.
+// Left empty, the globe still works fully — just without building geometry.
+const CESIUM_ION_TOKEN = '';
+
 function initGlobe() {
-  // Suppress Ion token requirement — we use only third-party providers
-  try { Cesium.Ion.defaultAccessToken = undefined; } catch(e) {}
+  if (CESIUM_ION_TOKEN) {
+    try { Cesium.Ion.defaultAccessToken = CESIUM_ION_TOKEN; } catch(e) {}
+  } else {
+    // Suppress Ion token requirement — we use only third-party providers
+    try { Cesium.Ion.defaultAccessToken = undefined; } catch(e) {}
+  }
 
   // Hide credit container
   const creditDiv = document.createElement('div');
@@ -177,7 +283,7 @@ function initGlobe() {
   // Esri World Imagery: free, no API key, satellite tiles up to zoom 19 (~0.3m/px).
   const satelliteProvider = new Cesium.UrlTemplateImageryProvider({
     url: 'https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
-    maximumLevel: 17, // plenty for building-level zoom; avoids 404-thrash past Esri's real coverage
+    maximumLevel: 19, // Esri's real coverage tops out around here in well-mapped urban areas
     enablePickFeatures: false,
     credit: '© Esri, DigitalGlobe, GeoEye, Earthstar Geographics',
   });
@@ -185,7 +291,7 @@ function initGlobe() {
   // Esri reference labels overlay (city names, roads, country names)
   const labelsProvider = new Cesium.UrlTemplateImageryProvider({
     url: 'https://services.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}',
-    maximumLevel: 17,
+    maximumLevel: 19,
     enablePickFeatures: false,
   });
 
@@ -210,6 +316,13 @@ function initGlobe() {
   // Satellite imagery first (bottom), reference labels/boundaries on top
   viewer.imageryLayers.addImageryProvider(satelliteProvider);
   viewer.imageryLayers.addImageryProvider(labelsProvider);
+
+  // Real 3D building extrusions (only available with a Cesium ion token)
+  if (CESIUM_ION_TOKEN) {
+    Cesium.createOsmBuildingsAsync()
+      .then(tileset => viewer.scene.primitives.add(tileset))
+      .catch(e => console.warn('OSM Buildings failed to load:', e));
+  }
 
   // ── Performance tuning ──────────────────────────────────────────────
   // The pulsing rings + continuous rotation + tile streaming were pegging
@@ -248,6 +361,10 @@ function initGlobe() {
   // Add all conflict markers
   buildConflictEntities();
 
+  // Add global trade route arrows and ship markers
+  buildTradeRoutes();
+  buildShipEntities();
+
   // Animation: rings + auto-rotation run on every render frame
   viewer.scene.preRender.addEventListener(onRenderFrame);
 
@@ -264,8 +381,14 @@ function initGlobe() {
   const clickH = new Cesium.ScreenSpaceEventHandler(viewer.scene.canvas);
   clickH.setInputAction(evt => {
     const picked = viewer.scene.pick(evt.position);
-    if (Cesium.defined(picked) && picked.id?.worldwatchData) {
-      openPopup(picked.id.worldwatchData);
+    if (!Cesium.defined(picked) || !picked.id) return;
+    const id = picked.id;
+    if (id.isConflict && id.worldwatchData) {
+      openPopup(id.worldwatchData);
+    } else if (id.isShip && id.worldwatchData) {
+      openShipPopup(id.worldwatchData);
+    } else if (id.properties?.ADM0_A3 || id.properties?.NAME) {
+      openCountryPopup(id);
     }
   }, Cesium.ScreenSpaceEventType.LEFT_CLICK);
 
@@ -279,8 +402,10 @@ function initGlobe() {
     setTimeout(() => { hoverThrottle = false; }, 80);
 
     const picked = viewer.scene.pick(evt.endPosition);
-    if (Cesium.defined(picked) && picked.id?.worldwatchData) {
-      tooltip.textContent       = picked.id.worldwatchData.name;
+    const id     = Cesium.defined(picked) ? picked.id : undefined;
+    const label  = id?.worldwatchData?.name || id?.properties?.NAME?.getValue() || id?.properties?.ADMIN?.getValue();
+    if (label) {
+      tooltip.textContent       = label;
       tooltip.style.display     = 'block';
       viewer.scene.canvas.style.cursor = 'pointer';
     } else {
@@ -475,6 +600,114 @@ function buildFilters() {
   });
 }
 
+// ── Trade & Shipping ─────────────────────────────────────────────────────
+function buildTradeFilters() {
+  const container = document.getElementById('trade-filter-list');
+  if (!container) return;
+  const rows = [
+    { key:'routes', color:'#30d158', label:'Handelsrouten', count: TRADE_ROUTES.length, get: () => tradeRoutesVisible, set: v => { tradeRoutesVisible = v; tradeRouteEntities.forEach(e => e.show = v); } },
+    { key:'ships',  color:'#0a84ff', label:'Schiffe',       count: SHIPS.length,        get: () => shipsVisible,       set: v => { shipsVisible = v; shipEntities.forEach(e => e.show = v); } },
+  ];
+  rows.forEach(r => {
+    const row = document.createElement('div');
+    row.className = 'filter-row';
+    row.innerHTML = `
+      <div class="f-dot" style="background:${r.color};box-shadow:0 0 4px ${r.color}"></div>
+      <span class="f-label">${r.label}</span>
+      <span class="f-count">${r.count}</span>
+      <div class="f-toggle" data-key="${r.key}" style="background:${r.color}"></div>
+    `;
+    const toggle = row.querySelector('.f-toggle');
+    toggle.addEventListener('click', () => {
+      const next = !r.get();
+      r.set(next);
+      toggle.classList.toggle('off', !next);
+      toggle.style.background = next ? r.color : 'rgba(120,120,128,0.32)';
+    });
+    container.appendChild(row);
+  });
+}
+
+// Cesium's built-in GEODESIC arc subdivision throws a RangeError ("Too many
+// properties to enumerate") on long, continent-spanning segments — the same
+// underlying bug previously hit via clampToGround. Side-step it entirely by
+// pre-sampling the great-circle arc ourselves and handing Cesium already-short
+// straight segments (arcType: NONE), so it never runs its own subdivision.
+function buildGeodesicArc(coordsFlat, segmentsPerLeg = 24) {
+  const positions = [];
+  for (let i = 0; i < coordsFlat.length - 2; i += 2) {
+    const start    = Cesium.Cartographic.fromDegrees(coordsFlat[i],   coordsFlat[i + 1]);
+    const end      = Cesium.Cartographic.fromDegrees(coordsFlat[i + 2], coordsFlat[i + 3]);
+    const geodesic = new Cesium.EllipsoidGeodesic(start, end);
+    for (let s = (i > 0 ? 1 : 0); s <= segmentsPerLeg; s++) {
+      const carto = geodesic.interpolateUsingFraction(s / segmentsPerLeg);
+      positions.push(Cesium.Cartographic.toCartesian(carto));
+    }
+  }
+  return positions;
+}
+
+function buildTradeRoutes() {
+  tradeRouteEntities.length = 0;
+  TRADE_ROUTES.forEach(route => {
+    const entity = viewer.entities.add({
+      show: tradeRoutesVisible,
+      polyline: {
+        positions: buildGeodesicArc(route.coords),
+        width: 5,
+        material: new Cesium.PolylineArrowMaterialProperty(Cesium.Color.fromCssColorString(route.color).withAlpha(0.85)),
+        arcType: Cesium.ArcType.NONE,
+        clampToGround: false,
+      },
+    });
+    entity.worldwatchData = { name: route.name };
+    tradeRouteEntities.push(entity);
+  });
+}
+
+const _shipIconCache = {};
+function shipIconDataUrl(color) {
+  if (_shipIconCache[color]) return _shipIconCache[color];
+  const canvas = document.createElement('canvas');
+  canvas.width = 28; canvas.height = 28;
+  const ctx = canvas.getContext('2d');
+  ctx.globalAlpha = 0.88;
+  ctx.fillStyle = color;
+  ctx.beginPath(); ctx.arc(14, 14, 12, 0, Math.PI * 2); ctx.fill();
+  ctx.globalAlpha = 1;
+  ctx.strokeStyle = 'rgba(255,255,255,0.6)';
+  ctx.lineWidth   = 1.5;
+  ctx.stroke();
+  ctx.font = '14px sans-serif';
+  ctx.textAlign    = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText('🚢', 14, 15);
+  const url = canvas.toDataURL();
+  _shipIconCache[color] = url;
+  return url;
+}
+
+function buildShipEntities() {
+  shipEntities.length = 0;
+  SHIPS.forEach(ship => {
+    const color = SHIP_TYPE[ship.type]?.color || '#0a84ff';
+    const entity = viewer.entities.add({
+      show: shipsVisible,
+      position: Cesium.Cartesian3.fromDegrees(ship.lng, ship.lat),
+      billboard: {
+        image:  shipIconDataUrl(color),
+        width:  22,
+        height: 22,
+        // No disableDepthTestDistance: billboards should be (and correctly
+        // are, by default) occluded by the globe when on its far side.
+      },
+    });
+    entity.worldwatchData = ship;
+    entity.isShip = true;
+    shipEntities.push(entity);
+  });
+}
+
 // ── Stats ─────────────────────────────────────────────────────────────────
 function updateStats(data) {
   const total    = data.length;
@@ -489,6 +722,7 @@ function updateStats(data) {
 
 // ── Popup ─────────────────────────────────────────────────────────────────
 function openPopup(d) {
+  closeInfoPopup();
   const color = T[d.type]?.color || '#ff2244';
   set('p-name', d.name);
   const badge = document.getElementById('p-badge');
@@ -519,6 +753,70 @@ function openPopup(d) {
 
 function closePopup() {
   document.getElementById('popup').classList.remove('open');
+}
+
+// ── Country / Ship Info Popup (generic) ───────────────────────────────────
+function openInfoPopup({ name, badgeText, badgeColor, rows, desc, flyTo }) {
+  closePopup();
+  set('i-name', name);
+  const badge = document.getElementById('i-badge');
+  badge.textContent   = badgeText;
+  badge.style.cssText = `background:${badgeColor}18;color:${badgeColor};border:1px solid ${badgeColor}40`;
+  const rowsEl = document.getElementById('i-rows');
+  rowsEl.innerHTML = rows.map(([k, v]) => `<div class="popup-row"><span>${esc(k)}</span><strong>${esc(v)}</strong></div>`).join('');
+  set('i-desc', desc || '');
+  document.getElementById('info-popup').classList.add('open');
+  if (flyTo && viewer) {
+    viewer.camera.flyTo({
+      destination: Cesium.Cartesian3.fromDegrees(flyTo.lng, flyTo.lat, flyTo.height || 3500000),
+      duration: 1.2,
+    });
+  }
+}
+
+function closeInfoPopup() {
+  document.getElementById('info-popup').classList.remove('open');
+}
+
+function openCountryPopup(entity) {
+  const props = entity.properties;
+  const name  = props.NAME?.getValue() ?? props.ADMIN?.getValue() ?? 'Unbekannt';
+  const iso   = props.ADM0_A3?.getValue() || props.ISO_A3?.getValue();
+  const pop   = props.POP_EST?.getValue();
+  const gdpMd = props.GDP_MD_EST?.getValue(); // millions USD
+  const info  = COUNTRY_INFO[iso] || {};
+  const rows = [
+    ['Regierungschef',       info.leader      || '— keine Daten —'],
+    ['Partei',               info.party       || '—'],
+    ['Politische Ausrichtung', info.orientation || '—'],
+    ['Bevölkerung',          pop   ? Math.round(pop).toLocaleString('de-DE')         : '—'],
+    ['BIP',                  gdpMd ? '$' + Math.round(gdpMd / 1000).toLocaleString('de-DE') + ' Mrd.' : '—'],
+    ['Staatsverschuldung',   info.debtGdp != null ? info.debtGdp + '% des BIP' : '—'],
+  ];
+  openInfoPopup({
+    name,
+    badgeText: props.CONTINENT?.getValue() || 'Land',
+    badgeColor: '#0a84ff',
+    rows,
+    desc: info.leader ? 'Stand: 2025 — politische Angaben können sich seither geändert haben.' : 'Für dieses Land liegen keine detaillierten politischen Daten vor.',
+  });
+}
+
+function openShipPopup(ship) {
+  const cfg = SHIP_TYPE[ship.type] || {};
+  openInfoPopup({
+    name: ship.name,
+    badgeText: cfg.label || ship.type,
+    badgeColor: cfg.color || '#0a84ff',
+    rows: [
+      ['Ladung',   ship.cargo],
+      ['Flagge',   ship.flag],
+      ['Position', `${ship.lat.toFixed(1)}°, ${ship.lng.toFixed(1)}°`],
+      ['Route',    ship.route],
+    ],
+    desc: 'Position illustrativ — kein Live-AIS-Tracking.',
+    flyTo: { lng: ship.lng, lat: ship.lat, height: 1500000 },
+  });
 }
 
 // ── News Mode & Tabs ──────────────────────────────────────────────────────

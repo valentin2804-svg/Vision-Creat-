@@ -259,57 +259,56 @@ function initGlobe() {
   }, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
 }
 
-// One shared clock read per frame instead of one Date.now() call per ring property
-// (was ~186 calls/frame across 31 events x 2 rings x 3 callbacks — now 1/frame).
-let frameNow = Date.now();
-
 // Called every rendered frame
 function onRenderFrame() {
-  frameNow = Date.now();
-
   // Auto-rotate around Earth's axis
   if (autoRotate) {
     viewer.scene.camera.rotate(Cesium.Cartesian3.UNIT_Z, -0.00007);
   }
+
+  // Reposition the CSS pulse rings to track each entity's screen position.
+  // Cheap (one matrix projection per event, no geometry) — the actual pulse
+  // animation runs in CSS via `transform`/`opacity`, so positioning here uses
+  // left/top instead, which never collides with the running CSS animation.
+  const globeEl = document.getElementById('globe-el');
+  const w = globeEl.clientWidth, h = globeEl.clientHeight;
+  allEntities.forEach(({ dot, ringEl, event }) => {
+    if (!dot.show) { ringEl.style.display = 'none'; return; }
+    const win = Cesium.SceneTransforms.wgs84ToWindowCoordinates(viewer.scene, dot.position.getValue(viewer.clock.currentTime));
+    if (!win || win.x < -50 || win.x > w + 50 || win.y < -50 || win.y > h + 50) {
+      ringEl.style.display = 'none';
+    } else {
+      ringEl.style.display = 'block';
+      ringEl.style.left = win.x + 'px';
+      ringEl.style.top  = win.y + 'px';
+    }
+  });
 }
 
 function buildConflictEntities() {
   allEntities.length = 0;
+  const globeEl = document.getElementById('globe-el');
 
   EVENTS.forEach(event => {
     const pos     = Cesium.Cartesian3.fromDegrees(event.lng, event.lat);
     const hex     = T[event.type]?.color || '#ff2244';
     const color   = Cesium.Color.fromCssColorString(hex);
-    const maxR    = event.severity * 110000; // radius in meters
     const visible = activeFilters.has(event.type);
-    const offset  = (event.id * 0.37) % 1; // stagger phase per event
+    const sizePx  = 18 + event.severity * 5; // ring footprint in screen pixels
 
-    // One pulsing ring per event (was two) — halves the animated entity count
-    const rings = [0].map(phaseShift => {
-      const totalOffset = (offset + phaseShift) % 1;
-      return viewer.entities.add({
-        show: visible,
-        position: pos,
-        ellipse: {
-          semiMajorAxis: new Cesium.CallbackProperty(() => {
-            const p = (frameNow / 2400 + totalOffset) % 1;
-            return maxR * Math.max(0.02, p);
-          }, false),
-          semiMinorAxis: new Cesium.CallbackProperty(() => {
-            const p = (frameNow / 2400 + totalOffset) % 1;
-            return maxR * Math.max(0.02, p);
-          }, false),
-          material: new Cesium.ColorMaterialProperty(
-            new Cesium.CallbackProperty(() => {
-              const p = (frameNow / 2400 + totalOffset) % 1;
-              return color.withAlpha(Math.max(0, (1 - p) * 0.6));
-            }, false)
-          ),
-          height: 0,
-          outline: false,
-        },
-      });
-    });
+    // CSS-animated pulse ring (DOM div, positioned per-frame) — replaces the
+    // old per-event animated Cesium ellipse, which forced a CPU geometry
+    // rebuild every frame and was the single biggest cause of GPU stutter.
+    const ringEl = document.createElement('div');
+    ringEl.className = 'pulse-ring';
+    ringEl.style.width      = sizePx + 'px';
+    ringEl.style.height     = sizePx + 'px';
+    ringEl.style.marginLeft = (-sizePx / 2) + 'px'; // centers the ring on its left/top point
+    ringEl.style.marginTop  = (-sizePx / 2) + 'px';
+    ringEl.style.color      = hex; // currentColor used by border/background in CSS
+    ringEl.style.animationDelay = `${(event.id * 0.31) % 2.4}s`;
+    ringEl.style.display    = visible ? 'block' : 'none';
+    globeEl.appendChild(ringEl);
 
     // Static center dot + label for critical events
     const dot = viewer.entities.add({
@@ -339,29 +338,33 @@ function buildConflictEntities() {
     dot.worldwatchData = event;
     dot.isConflict     = true;
 
-    allEntities.push({ dot, rings, event });
+    allEntities.push({ dot, ringEl, event });
   });
 
   updateStats(filteredEvents());
 }
 
 function updateEntityVisibility() {
-  allEntities.forEach(({ dot, rings, event }) => {
+  allEntities.forEach(({ dot, ringEl, event }) => {
     const show = activeFilters.has(event.type);
     dot.show = show;
-    rings.forEach(r => { r.show = show; });
+    if (!show) ringEl.style.display = 'none';
   });
   updateStats(filteredEvents());
 }
 
 function loadCountryBorders() {
+  // No clampToGround — our terrain is a flat EllipsoidTerrainProvider (no
+  // elevation data), so clamping bought nothing but triggered an expensive
+  // (and here buggy — "Too many properties to enumerate") ground-clamped
+  // rhumb-line subdivision for every one of the ~180 country polygons.
   Cesium.GeoJsonDataSource.load(
     'https://raw.githubusercontent.com/vasturiano/globe.gl/master/example/datasets/ne_110m_admin_0_countries.geojson',
     {
       stroke:      Cesium.Color.fromCssColorString('#bbbbdd').withAlpha(0.35),
       fill:        new Cesium.Color(0, 0, 0, 0),
       strokeWidth: 1,
-      clampToGround: true,
+      clampToGround: false,
     }
   ).then(ds => viewer.dataSources.add(ds)).catch(() => {});
 }
@@ -376,7 +379,7 @@ function drawFrontLine() {
         dashLength:  20.0,
         dashPattern: parseInt('1111000011110000', 2),
       }),
-      clampToGround: true,
+      clampToGround: false,
     },
   });
 

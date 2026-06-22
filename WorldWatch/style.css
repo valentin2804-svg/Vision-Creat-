@@ -245,6 +245,27 @@ body {
   backdrop-filter:blur(6px); z-index:50;
 }
 
+/* Conflict pulse rings — pure CSS animation (GPU compositor), positioned
+   per-frame via JS transform. Replaces animated Cesium ellipse entities,
+   which required an expensive CPU geometry rebuild every single frame. */
+.pulse-ring {
+  position: absolute;
+  /* left/top set per-frame by JS (plain px, not animated by CSS);
+     CSS animation owns transform/opacity exclusively so the two never fight. */
+  border-radius: 50%;
+  border: 1.5px solid currentColor;
+  background: currentColor;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 5;
+  animation: pulse-ring-anim 2.4s ease-out infinite;
+  will-change: transform, opacity;
+}
+@keyframes pulse-ring-anim {
+  0%   { opacity: 0.55; transform: scale(1); }
+  100% { opacity: 0;    transform: scale(2.4); }
+}
+
 /* Popup */
 .popup {
   position:absolute; top:50%; right:18px; transform:translateY(-50%);

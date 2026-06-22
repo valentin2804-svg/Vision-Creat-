@@ -264,7 +264,7 @@ function showGlobeError(message) {
 // Optional: paste a free Cesium ion access token (cesium.com/ion → Access
 // Tokens) here to enable real 3D OSM building extrusions on close zoom.
 // Left empty, the globe still works fully — just without building geometry.
-const CESIUM_ION_TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJiYmI3YjA4NS1iZTJjLTQxMWMtYmVkNS0yMzU2ZTc0OWY2MzUiLCJpZCI6NDQ3NzQ0LCJzdWIiOiJ2YWxlbnRpbjI4MDQtc3ZnIiwiaXNzIjoiaHR0cHM6Ly9hcGkuY2VzaXVtLmNvbSIsImF1ZCI6IldXIiwiaWF0IjoxNzgyMTYxNDIxfQ.WUR2FOk9pxfq5t_aUIvIgpyEL3c32zS9k0S7U7ndwKA';
+const CESIUM_ION_TOKEN = '';
 
 function initGlobe() {
   if (CESIUM_ION_TOKEN) {

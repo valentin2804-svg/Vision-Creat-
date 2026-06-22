@@ -264,7 +264,7 @@ function showGlobeError(message) {
 // Optional: paste a free Cesium ion access token (cesium.com/ion → Access
 // Tokens) here to enable real 3D OSM building extrusions on close zoom.
 // Left empty, the globe still works fully — just without building geometry.
-const CESIUM_ION_TOKEN = '';
+const CESIUM_ION_TOKEN = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJiYmI3YjA4NS1iZTJjLTQxMWMtYmVkNS0yMzU2ZTc0OWY2MzUiLCJpZCI6NDQ3NzQ0LCJzdWIiOiJ2YWxlbnRpbjI4MDQtc3ZnIiwiaXNzIjoiaHR0cHM6Ly9hcGkuY2VzaXVtLmNvbSIsImF1ZCI6IldXIiwiaWF0IjoxNzgyMTYxNDIxfQ.WUR2FOk9pxfq5t_aUIvIgpyEL3c32zS9k0S7U7ndwKA';
 
 function initGlobe() {
   if (CESIUM_ION_TOKEN) {
@@ -516,20 +516,66 @@ function updateEntityVisibility() {
   updateStats(filteredEvents());
 }
 
+// Cesium's own polygon-outline geometry funnels long segments through the
+// same buggy geodesic/rhumb subdivision as the trade routes did (see
+// buildGeodesicArc above) — a few large, simply-shaped countries (e.g.
+// Russia, Canada, Australia) have multi-hundred-km straight segments at
+// this resolution, and that occasionally throws "Too many properties to
+// enumerate" depending on load timing. Side-step it the same way: disable
+// Cesium's built-in outline entirely and draw our own border polylines,
+// only subdividing the rare long segments ourselves.
+function resampleBorderRing(cartesians) {
+  const ellipsoid = Cesium.Ellipsoid.WGS84;
+  const n = cartesians.length;
+  const positions = [];
+  for (let i = 0; i < n; i++) {
+    const a = cartesians[i];
+    const b = cartesians[(i + 1) % n];
+    positions.push(a);
+    const dist = Cesium.Cartesian3.distance(a, b);
+    if (dist > 300000) { // > ~300km: pre-sample so Cesium never has to subdivide it itself
+      const geodesic = new Cesium.EllipsoidGeodesic(
+        Cesium.Cartographic.fromCartesian(a, ellipsoid),
+        Cesium.Cartographic.fromCartesian(b, ellipsoid)
+      );
+      const steps = Math.min(30, Math.ceil(dist / 200000));
+      for (let s = 1; s < steps; s++) {
+        positions.push(Cesium.Cartographic.toCartesian(geodesic.interpolateUsingFraction(s / steps), ellipsoid));
+      }
+    }
+  }
+  positions.push(cartesians[0]);
+  return positions;
+}
+
 function loadCountryBorders() {
-  // No clampToGround — our terrain is a flat EllipsoidTerrainProvider (no
-  // elevation data), so clamping bought nothing but triggered an expensive
-  // (and here buggy — "Too many properties to enumerate") ground-clamped
-  // rhumb-line subdivision for every one of the ~180 country polygons.
   Cesium.GeoJsonDataSource.load(
     'https://raw.githubusercontent.com/vasturiano/globe.gl/master/example/datasets/ne_110m_admin_0_countries.geojson',
     {
-      stroke:      Cesium.Color.fromCssColorString('#bbbbdd').withAlpha(0.35),
       fill:        new Cesium.Color(0, 0, 0, 0),
-      strokeWidth: 1,
+      stroke:      Cesium.Color.TRANSPARENT,
+      strokeWidth: 0,
       clampToGround: false,
     }
-  ).then(ds => viewer.dataSources.add(ds)).catch(() => {});
+  ).then(ds => {
+    viewer.dataSources.add(ds);
+    const borderColor = Cesium.Color.fromCssColorString('#bbbbdd').withAlpha(0.35);
+    ds.entities.values.forEach(entity => {
+      if (!entity.polygon) return;
+      entity.polygon.outline = false; // never let Cesium build its own outline geometry
+      const hierarchy = entity.polygon.hierarchy?.getValue(viewer.clock.currentTime);
+      if (!hierarchy?.positions?.length) return;
+      viewer.entities.add({
+        polyline: {
+          positions: resampleBorderRing(hierarchy.positions),
+          width: 1,
+          material: new Cesium.ColorMaterialProperty(borderColor),
+          arcType: Cesium.ArcType.NONE,
+          clampToGround: false,
+        },
+      });
+    });
+  }).catch(() => {});
 }
 
 function drawFrontLine() {

@@ -190,7 +190,9 @@ function initGlobe() {
   });
 
   viewer = new Cesium.Viewer('globe-el', {
-    imageryProvider:    satelliteProvider,
+    baseLayer:          false, // Cesium 1.104+: constructor's old `imageryProvider` option
+                                // is ignored, silently leaving zero base layers. We add the
+                                // satellite + labels layers ourselves right below, in order.
     terrainProvider:    new Cesium.EllipsoidTerrainProvider(),
     animation:          false,
     baseLayerPicker:    false,
@@ -205,7 +207,8 @@ function initGlobe() {
     creditContainer:    creditDiv,
   });
 
-  // Add labels overlay on top of satellite
+  // Satellite imagery first (bottom), reference labels/boundaries on top
+  viewer.imageryLayers.addImageryProvider(satelliteProvider);
   viewer.imageryLayers.addImageryProvider(labelsProvider);
 
   // ── Performance tuning ──────────────────────────────────────────────

@@ -301,11 +301,18 @@ function onRenderFrame() {
   // Cheap (one matrix projection per event, no geometry) — the actual pulse
   // animation runs in CSS via `transform`/`opacity`, so positioning here uses
   // left/top instead, which never collides with the running CSS animation.
+  // wgs84ToWindowCoordinates is a pure projection with no occlusion test, so
+  // markers on the far side of the globe still get a screen position and
+  // "shine through" the surface — guard with EllipsoidalOccluder so only
+  // points actually facing the camera get shown.
   const globeEl = document.getElementById('globe-el');
   const w = globeEl.clientWidth, h = globeEl.clientHeight;
+  const occluder = new Cesium.EllipsoidalOccluder(viewer.scene.globe.ellipsoid, viewer.scene.camera.positionWC);
   allEntities.forEach(({ dot, ringEl, event }) => {
     if (!dot.show) { ringEl.style.display = 'none'; return; }
-    const win = Cesium.SceneTransforms.wgs84ToWindowCoordinates(viewer.scene, dot.position.getValue(viewer.clock.currentTime));
+    const pos = dot.position.getValue(viewer.clock.currentTime);
+    if (!occluder.isPointVisible(pos)) { ringEl.style.display = 'none'; return; }
+    const win = Cesium.SceneTransforms.wgs84ToWindowCoordinates(viewer.scene, pos);
     if (!win || win.x < -50 || win.x > w + 50 || win.y < -50 || win.y > h + 50) {
       ringEl.style.display = 'none';
     } else {

@@ -29,7 +29,7 @@
 
     <!-- ── Top Bar ────────────────────────────────────────────────── -->
     <header class="topbar">
-      <div class="topbar-logo"><div class="logo-pulse"></div>WorldWatch</div>
+      <div class="topbar-logo">WorldWatch</div>
       <div class="topbar-live"><div class="live-dot"></div>Live</div>
       <div class="topbar-divider"></div>
       <div class="topbar-counters">
@@ -77,6 +77,10 @@
     <!-- ── Globe (Cesium renders here) ───────────────────────────── -->
     <main class="globe-area">
       <div id="globe-el"></div>
+      <div class="globe-loading" id="globe-loading">
+        <div class="spinner"></div>
+        <span id="globe-loading-text">Loading globe…</span>
+      </div>
       <div class="globe-tooltip" id="tooltip"></div>
       <div class="popup" id="popup">
         <div class="popup-head">

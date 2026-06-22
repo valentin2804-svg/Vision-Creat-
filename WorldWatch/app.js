@@ -35,12 +35,13 @@ const EVENTS = [
   { id:31, name:'COVID-19 – New Variants',     lat:35.0,  lng:105.0,  type:'disease',   severity:3, region:'Global',       casualties:'700M+ total',   status:'Endemic',  desc:'New variants causing seasonal surges globally. WHO monitoring.' },
 ];
 
+// iOS system accent colors (dark mode), matching style.css design tokens
 const T = {
-  war:       { color:'#ff2244', label:'Armed Conflict'     },
-  terrorism: { color:'#ff6600', label:'Terrorism'          },
-  unrest:    { color:'#ff8800', label:'Civil Unrest'       },
-  disaster:  { color:'#0099ff', label:'Natural Disaster'   },
-  disease:   { color:'#bb44ff', label:'Disease / Outbreak' },
+  war:       { color:'#ff453a', label:'Armed Conflict'     },
+  terrorism: { color:'#ff9f0a', label:'Terrorism'          },
+  unrest:    { color:'#ffd60a', label:'Civil Unrest'       },
+  disaster:  { color:'#0a84ff', label:'Natural Disaster'   },
+  disease:   { color:'#bf5af2', label:'Disease / Outbreak' },
 };
 
 // Ukraine front line (approximate, 2025) — [lng, lat] pairs
@@ -134,13 +135,33 @@ const allEntities = []; // { dot, rings[], event }
 document.addEventListener('DOMContentLoaded', () => {
   buildFilters();
   buildNewsTabs('world');
-  initGlobe();
+  try {
+    initGlobe();
+  } catch (e) {
+    console.error('Globe failed to initialize:', e);
+    showGlobeError('Globe failed to load. Click to retry.');
+  }
   fetchNews();
   fetchStocks();
   setInterval(fetchNews,   5 * 60 * 1000);
   setInterval(fetchStocks, 3 * 60 * 1000);
   stampTime();
 });
+
+function hideGlobeLoading() {
+  const el = document.getElementById('globe-loading');
+  if (el) el.classList.add('hidden');
+}
+
+function showGlobeError(message) {
+  const el   = document.getElementById('globe-loading');
+  const text = document.getElementById('globe-loading-text');
+  if (!el || !text) return;
+  text.textContent = message;
+  el.classList.remove('hidden');
+  el.style.cursor = 'pointer';
+  el.onclick = () => window.location.reload();
+}
 
 // ── CesiumJS Globe ────────────────────────────────────────────────────────
 function initGlobe() {
@@ -207,6 +228,13 @@ function initGlobe() {
     destination: Cesium.Cartesian3.fromDegrees(20, 15, 15000000),
     duration: 0,
   });
+
+  // Hide the loading overlay once the first batch of tiles has painted —
+  // with a safety-net timeout so a stalled tile request never leaves the
+  // user staring at a spinner forever.
+  const onTileProgress = remaining => { if (remaining === 0) hideGlobeLoading(); };
+  viewer.scene.globe.tileLoadProgressEvent.addEventListener(onTileProgress);
+  setTimeout(hideGlobeLoading, 5000);
 
   // Load country border polygons (async)
   loadCountryBorders();
@@ -294,7 +322,7 @@ function buildConflictEntities() {
     const hex     = T[event.type]?.color || '#ff2244';
     const color   = Cesium.Color.fromCssColorString(hex);
     const visible = activeFilters.has(event.type);
-    const sizePx  = 18 + event.severity * 5; // ring footprint in screen pixels
+    const sizePx  = 13 + event.severity * 3; // ring footprint in screen px — kept modest so clustered markers don't blur into a blob
 
     // CSS-animated pulse ring (DOM div, positioned per-frame) — replaces the
     // old per-event animated Cesium ellipse, which forced a CPU geometry
@@ -315,9 +343,9 @@ function buildConflictEntities() {
       show: visible,
       position: pos,
       point: {
-        pixelSize: 5 + event.severity * 0.9,
+        pixelSize: 4 + event.severity * 0.55,
         color: color,
-        outlineColor: Cesium.Color.WHITE.withAlpha(0.35),
+        outlineColor: Cesium.Color.WHITE.withAlpha(0.55),
         outlineWidth: 1,
         disableDepthTestDistance: Number.POSITIVE_INFINITY,
       },
@@ -375,7 +403,7 @@ function drawFrontLine() {
       positions:     Cesium.Cartesian3.fromDegreesArray(UKRAINE_FRONT_COORDS),
       width:         2.5,
       material: new Cesium.PolylineDashMaterialProperty({
-        color:       Cesium.Color.fromCssColorString('#ff6600').withAlpha(0.9),
+        color:       Cesium.Color.fromCssColorString('#ff9f0a').withAlpha(0.9),
         dashLength:  20.0,
         dashPattern: parseInt('1111000011110000', 2),
       }),
@@ -387,8 +415,8 @@ function drawFrontLine() {
     position: Cesium.Cartesian3.fromDegrees(37.5, 48.5),
     label: {
       text: 'Front Line (est.)',
-      font: '10px Segoe UI, sans-serif',
-      fillColor: Cesium.Color.fromCssColorString('#ff8800'),
+      font: '11px -apple-system, Segoe UI, sans-serif',
+      fillColor: Cesium.Color.fromCssColorString('#ff9f0a'),
       showBackground: true,
       backgroundColor: new Cesium.Color(0, 0, 0, 0.7),
       backgroundPadding: new Cesium.Cartesian2(5, 3),
@@ -418,12 +446,19 @@ function buildFilters() {
       <div class="f-dot" style="background:${cfg.color};box-shadow:0 0 4px ${cfg.color}"></div>
       <span class="f-label">${cfg.label}</span>
       <span class="f-count">${count}</span>
-      <div class="f-toggle" data-type="${type}"></div>
+      <div class="f-toggle" data-type="${type}" style="background:${cfg.color}"></div>
     `;
     const toggle = row.querySelector('.f-toggle');
     toggle.addEventListener('click', () => {
-      if (activeFilters.has(type)) { activeFilters.delete(type); toggle.classList.add('off'); }
-      else                         { activeFilters.add(type);    toggle.classList.remove('off'); }
+      if (activeFilters.has(type)) {
+        activeFilters.delete(type);
+        toggle.classList.add('off');
+        toggle.style.background = 'rgba(120,120,128,0.32)'; // inline style beats CSS class, so set it directly
+      } else {
+        activeFilters.add(type);
+        toggle.classList.remove('off');
+        toggle.style.background = cfg.color;
+      }
       refreshGlobe();
     });
     container.appendChild(row);

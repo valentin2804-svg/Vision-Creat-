@@ -149,11 +149,17 @@ const SHIPS = [
 const STOCKS_TO_FETCH = [
   { symbol:'^GDAXI',   name:'DAX'      }, { symbol:'^DJI',     name:'DOW'      },
   { symbol:'^GSPC',    name:'S&P 500'  }, { symbol:'^IXIC',    name:'NASDAQ'   },
-  { symbol:'EURUSD=X', name:'EUR/USD'  }, { symbol:'CL=F',     name:'WTI Oil'  },
-  { symbol:'GC=F',     name:'Gold'     }, { symbol:'BTC-USD',  name:'Bitcoin'  },
-  { symbol:'NVDA',     name:'NVIDIA'   }, { symbol:'SAP.DE',   name:'SAP'      },
-  { symbol:'BMW.DE',   name:'BMW'      }, { symbol:'MBG.DE',   name:'Mercedes' },
-  { symbol:'TSLA',     name:'Tesla'    }, { symbol:'AMZN',     name:'Amazon'   },
+  { symbol:'^FTSE',    name:'FTSE 100' }, { symbol:'^FCHI',    name:'CAC 40'   },
+  { symbol:'^N225',    name:'Nikkei'   }, { symbol:'^HSI',     name:'Hang Seng'},
+  { symbol:'EURUSD=X', name:'EUR/USD'  }, { symbol:'GBPUSD=X', name:'GBP/USD'  },
+  { symbol:'CL=F',     name:'WTI Oil'  }, { symbol:'NG=F',     name:'Erdgas'   },
+  { symbol:'GC=F',     name:'Gold'     }, { symbol:'SI=F',     name:'Silber'   },
+  { symbol:'BTC-USD',  name:'Bitcoin'  }, { symbol:'ETH-USD',  name:'Ethereum' },
+  { symbol:'NVDA',     name:'NVIDIA'   }, { symbol:'AAPL',     name:'Apple'    },
+  { symbol:'MSFT',     name:'Microsoft'}, { symbol:'GOOGL',    name:'Alphabet' },
+  { symbol:'SAP.DE',   name:'SAP'      }, { symbol:'BMW.DE',   name:'BMW'      },
+  { symbol:'MBG.DE',   name:'Mercedes' }, { symbol:'TSLA',     name:'Tesla'    },
+  { symbol:'AMZN',     name:'Amazon'   }, { symbol:'META',     name:'Meta'     },
 ];
 
 const STOCK_FALLBACK = [
@@ -161,16 +167,28 @@ const STOCK_FALLBACK = [
   { symbol:'^DJI',     name:'DOW',      price:38921,  change:-0.31, prefix:'',  decimals:0 },
   { symbol:'^GSPC',    name:'S&P 500',  price:5412,   change:+0.52, prefix:'',  decimals:0 },
   { symbol:'^IXIC',    name:'NASDAQ',   price:16821,  change:+1.15, prefix:'',  decimals:0 },
+  { symbol:'^FTSE',    name:'FTSE 100', price:8120,   change:+0.34, prefix:'',  decimals:0 },
+  { symbol:'^FCHI',    name:'CAC 40',   price:7895,   change:-0.22, prefix:'',  decimals:0 },
+  { symbol:'^N225',    name:'Nikkei',   price:38950,  change:+0.81, prefix:'',  decimals:0 },
+  { symbol:'^HSI',     name:'Hang Seng',price:18230,  change:-0.65, prefix:'',  decimals:0 },
   { symbol:'EURUSD=X', name:'EUR/USD',  price:1.0842, change:-0.10, prefix:'',  decimals:4 },
+  { symbol:'GBPUSD=X', name:'GBP/USD',  price:1.2715, change:+0.08, prefix:'',  decimals:4 },
   { symbol:'CL=F',     name:'WTI Oil',  price:78.50,  change:-1.21, prefix:'$', decimals:2 },
+  { symbol:'NG=F',     name:'Erdgas',   price:2.85,   change:+1.45, prefix:'$', decimals:2 },
   { symbol:'GC=F',     name:'Gold',     price:2341,   change:+0.39, prefix:'$', decimals:0 },
+  { symbol:'SI=F',     name:'Silber',   price:28.40,  change:+0.92, prefix:'$', decimals:2 },
   { symbol:'BTC-USD',  name:'Bitcoin',  price:67500,  change:+2.12, prefix:'$', decimals:0 },
+  { symbol:'ETH-USD',  name:'Ethereum', price:3540,   change:+1.67, prefix:'$', decimals:0 },
   { symbol:'NVDA',     name:'NVIDIA',   price:892.40, change:+3.56, prefix:'$', decimals:2 },
+  { symbol:'AAPL',     name:'Apple',    price:189.30, change:+0.45, prefix:'$', decimals:2 },
+  { symbol:'MSFT',     name:'Microsoft',price:418.20, change:+0.71, prefix:'$', decimals:2 },
+  { symbol:'GOOGL',    name:'Alphabet', price:172.60, change:-0.28, prefix:'$', decimals:2 },
   { symbol:'SAP.DE',   name:'SAP',      price:185.20, change:+2.83, prefix:'€', decimals:2 },
   { symbol:'BMW.DE',   name:'BMW',      price:82.50,  change:-2.08, prefix:'€', decimals:2 },
   { symbol:'MBG.DE',   name:'Mercedes', price:61.40,  change:+2.68, prefix:'€', decimals:2 },
   { symbol:'TSLA',     name:'Tesla',    price:182.30, change:-1.78, prefix:'$', decimals:2 },
   { symbol:'AMZN',     name:'Amazon',   price:186.50, change:+1.84, prefix:'$', decimals:2 },
+  { symbol:'META',     name:'Meta',     price:478.90, change:+1.32, prefix:'$', decimals:2 },
 ];
 
 // ── News ──────────────────────────────────────────────────────────────────
@@ -197,6 +215,12 @@ const WORLD_FALLBACK = [
   { domain:'wsj.com',          seendate:'20260604T155000Z', title:'H5N1 bird flu: US reports new cattle herd infections, human spillover risk rises', url:'https://wsj.com' },
   { domain:'dw.com',           seendate:'20260604T150000Z', title:'Haiti: gang violence displaces 200,000 in Port-au-Prince as UN Security Council meets', url:'https://dw.com' },
   { domain:'bbc.co.uk',        seendate:'20260604T143000Z', title:'DRC: M23 rebels advance toward Goma despite international pressure for ceasefire', url:'https://bbc.co.uk' },
+  { domain:'reuters.com',      seendate:'20260604T140000Z', title:'Somalia: al-Shabaab claims responsibility for attack on government convoy near Mogadishu', url:'https://reuters.com' },
+  { domain:'wsj.com',          seendate:'20260604T133000Z', title:'OPEC+ weighs production cuts as oil markets react to widening Middle East conflict', url:'https://wsj.com' },
+  { domain:'apnews.com',       seendate:'20260604T130000Z', title:'Pakistan: TTP attack kills several soldiers in Khyber Pakhtunkhwa border region', url:'https://apnews.com' },
+  { domain:'bbc.co.uk',        seendate:'20260604T123000Z', title:'Lebanon: cross-border strikes continue as ceasefire talks remain stalled', url:'https://bbc.co.uk' },
+  { domain:'dw.com',           seendate:'20260604T120000Z', title:'Ethiopia: Amhara region violence displaces tens of thousands amid government crackdown', url:'https://dw.com' },
+  { domain:'reuters.com',      seendate:'20260604T113000Z', title:'Mexico: cartel violence surges in northern states ahead of security summit', url:'https://reuters.com' },
 ];
 const GERMANY_FALLBACK = [
   { domain:'tagesschau.de',    seendate:'20260604T200000Z', title:'Bundestag debattiert neue Migrationspolitik — heftige Auseinandersetzungen zwischen Koalitionspartnern', url:'https://tagesschau.de' },
@@ -211,6 +235,12 @@ const GERMANY_FALLBACK = [
   { domain:'spiegel.de',       seendate:'20260604T150000Z', title:'Scholz trifft Macron: Gemeinsame Erklärung zu Ukraine-Unterstützung und europäischer Verteidigung', url:'https://spiegel.de' },
   { domain:'faz.net',          seendate:'20260604T143000Z', title:'KI in der Industrie: Siemens und BMW investieren Milliarden in Automatisierung', url:'https://faz.net' },
   { domain:'sueddeutsche.de',  seendate:'20260604T135000Z', title:'Asylsystem: Kommunen fordern dringend mehr Unterstützung vom Bund', url:'https://sueddeutsche.de' },
+  { domain:'welt.de',          seendate:'20260604T130000Z', title:'Inflation in Deutschland sinkt leicht auf 2,3 Prozent im Jahresvergleich', url:'https://welt.de' },
+  { domain:'tagesschau.de',    seendate:'20260604T123000Z', title:'Verkehrsminister stellt neues Bahn-Sanierungsprogramm für überlastete Strecken vor', url:'https://tagesschau.de' },
+  { domain:'zeit.de',          seendate:'20260604T120000Z', title:'Fachkräftemangel: Wirtschaft fordert schnellere Anerkennung ausländischer Abschlüsse', url:'https://zeit.de' },
+  { domain:'spiegel.de',       seendate:'20260604T113000Z', title:'Cyberangriff auf Behördennetzwerk — BSI warnt vor weiteren Attacken auf Infrastruktur', url:'https://spiegel.de' },
+  { domain:'faz.net',          seendate:'20260604T110000Z', title:'Wohnungsbau: Förderprogramm für bezahlbaren Wohnraum in Großstädten beschlossen', url:'https://faz.net' },
+  { domain:'handelsblatt.com', seendate:'20260604T103000Z', title:'Exportzahlen übertreffen Erwartungen trotz globaler Handelsspannungen', url:'https://handelsblatt.com' },
 ];
 
 // ── State ─────────────────────────────────────────────────────────────────
@@ -240,9 +270,14 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   fetchNews();
   fetchStocks();
-  setInterval(fetchNews,   5 * 60 * 1000);
+  setInterval(() => fetchNews(true), 10 * 1000);
   setInterval(fetchStocks, 3 * 60 * 1000);
   stampTime();
+
+  // Full refresh every 3 minutes (within the requested 2-5 min window) so
+  // the whole dashboard — globe, news, markets — stays in sync with a clean
+  // slate, kiosk/wall-display style.
+  setTimeout(() => window.location.reload(), 3 * 60 * 1000);
 });
 
 function hideGlobeLoading() {
@@ -329,15 +364,15 @@ function initGlobe() {
   // the GPU at uncapped frame rate. Cap FPS, lower render resolution, and
   // reduce tile detail demand so the globe stays smooth on modest hardware.
   viewer.targetFrameRate = 30;
-  viewer.resolutionScale = 0.8;
+  viewer.resolutionScale = 1.0;
   viewer.scene.fxaa = false;
   viewer.scene.postProcessStages.fxaa.enabled = false;
-  viewer.scene.globe.maximumScreenSpaceError = 4; // default 2 — fewer/lower-res tiles needed
+  viewer.scene.globe.maximumScreenSpaceError = 1.5; // lower = sharper tiles even when zoomed out far (default 2)
   viewer.scene.globe.enableLighting       = false;
   viewer.scene.fog.enabled                = false;
   viewer.scene.skyAtmosphere.show         = true;
   viewer.scene.globe.showGroundAtmosphere = false; // ground glow was an extra render cost
-  viewer.scene.globe.tileCacheSize = 50;           // keep fewer tiles resident
+  viewer.scene.globe.tileCacheSize = 100;          // more resident tiles now that detail is higher
 
   // Start view: show Europe / Africa / Middle East
   viewer.camera.flyTo({
@@ -904,15 +939,17 @@ function setTab(btn, tab) {
 }
 
 // ── News Fetch ────────────────────────────────────────────────────────────
-async function fetchNews() {
+// silent=true (background 10s refresh) skips the "Loading…" flash in the
+// sidebar list — only the initial load / explicit mode-or-tab switch shows it.
+async function fetchNews(silent = false) {
   if (fetching) return;
   fetching = true;
   const list = document.getElementById('news-list');
-  list.innerHTML = '<div class="news-loading"><div class="spinner"></div><span>Loading…</span></div>';
+  if (!silent) list.innerHTML = '<div class="news-loading"><div class="spinner"></div><span>Loading…</span></div>';
   const queryMap = newsMode === 'world' ? WORLD_QUERIES : GERMANY_QUERIES;
   const fallback = newsMode === 'world' ? WORLD_FALLBACK : GERMANY_FALLBACK;
   const q = (queryMap[activeTab] || queryMap.all).split(' ').slice(0, 5).join('+');
-  const url = `https://api.gdeltproject.org/api/v2/doc/doc?query=${encodeURIComponent(q)}&mode=artlist&maxrecords=15&format=json&timespan=12h&sort=DateDesc`;
+  const url = `https://api.gdeltproject.org/api/v2/doc/doc?query=${encodeURIComponent(q)}&mode=artlist&maxrecords=25&format=json&timespan=12h&sort=DateDesc`;
   try {
     const ctrl = new AbortController();
     const t = setTimeout(() => ctrl.abort(), 8000);
@@ -952,7 +989,7 @@ function renderNews(articles) {
 
 function renderTicker(articles) {
   const inner = document.getElementById('ticker-inner');
-  const items = (articles || []).slice(0, 10).map(a => `<span class="ti">${esc(a.title)}</span>`).join('');
+  const items = (articles || []).slice(0, 20).map(a => `<span class="ti">${esc(a.title)}</span>`).join('');
   inner.innerHTML = items + items;
 }
 

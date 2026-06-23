@@ -92,12 +92,15 @@ body {
   align-items: center;
   white-space: nowrap;
   height: 100%;
-  animation: scroll-stock 90s linear infinite;
+  animation: scroll-stock 34s linear infinite;
 }
 
+/* Content is duplicated (items+items) so -50% lands exactly one full
+   set later than the start — a perfectly seamless, gapless loop with
+   no empty "flying in from off-screen" phase. */
 @keyframes scroll-stock {
-  0%   { transform: translateX(100vw); }
-  100% { transform: translateX(-100%); }
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
 }
 
 .si {
@@ -457,11 +460,12 @@ body {
 .ticker-track { flex:1; overflow:hidden; position:relative; height:100%; }
 .ticker-inner {
   display:flex; white-space:nowrap; align-items:center;
-  height:100%; animation:scroll-left 80s linear infinite;
+  height:100%; animation:scroll-left 30s linear infinite;
 }
+/* Seamless loop (see scroll-stock above for why -50%, not -100%) */
 @keyframes scroll-left {
-  0%   { transform:translateX(100vw); }
-  100% { transform:translateX(-100%); }
+  0%   { transform:translateX(0); }
+  100% { transform:translateX(-50%); }
 }
 .ti { color:var(--label-2); font-size:11px; margin-right:48px; font-weight: 400; }
 .ti::before { content:'● '; color:var(--sys-red); margin-right:5px; font-size: 9px; }

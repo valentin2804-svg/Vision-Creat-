@@ -12,6 +12,12 @@
       "runtimeExecutable": "node",
       "runtimeArgs": ["C:\\Users\\valir\\Desktop\\Claude\\WorldWatch\\server.js"],
       "port": 3001
+    },
+    {
+      "name": "vd",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["C:\\Users\\valir\\Desktop\\Claude\\Assistent\\server\\index.js"],
+      "port": 4711
     }
   ]
 }
